@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Checkbox,
     Flex,
     FormControl,
     FormLabel,
@@ -10,10 +9,43 @@ import {
     Link,
     Stack,
     Text,
-    useColorModeValue,
+    useColorModeValue, useToast,
 } from '@chakra-ui/react';
+import {useState} from "react";
 
-export default function Home() {
+export default function Home({installed}) {
+    const toast = useToast();
+
+    const [email, setEmail] = useState(null);
+    const [password, setPassword] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const login = async event => {
+        event.preventDefault();
+        setLoading(true);
+        if(!email) {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "You did not enter a valid email",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        } else if(!password) {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "You did not enter a valid password",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        } else {
+            // api submit
+        }
+    }
+
     return (
         <>
             <Flex
@@ -36,28 +68,37 @@ export default function Home() {
                         <Stack spacing={4}>
                             <FormControl id="email">
                                 <FormLabel>Email address</FormLabel>
-                                <Input type="email"/>
+                                <Input onChange={(event) => setEmail(event.target.value)} type="email"/>
                             </FormControl>
                             <FormControl id="password">
                                 <FormLabel>Password</FormLabel>
-                                <Input type="password"/>
+                                <Input onChange={(event) => setPassword(event.target.value)} type="password"/>
                             </FormControl>
                             <Stack spacing={10}>
                                 <Stack
                                     direction={{base: 'column', sm: 'row'}}
                                     align={'start'}
                                     justify={'space-between'}>
-                                    <Checkbox>Remember me</Checkbox>
-                                    <Link href={'/password-reset'} color={'blue.400'}>Forgot password?</Link>
+                                    <Link target={'_blank'} href={'/password-reset'} color={'blue.400'}>Forgot
+                                        password?</Link>
                                 </Stack>
-                                <Button
+                                {loading ? <Button
                                     bg={'blue.400'}
                                     color={'white'}
+                                    isLoading
+                                    _hover={{
+                                        bg: 'blue.500',
+                                    }}>
+                                    Signing in
+                                </Button> : <Button
+                                    bg={'blue.400'}
+                                    color={'white'}
+                                    onClick={login}
                                     _hover={{
                                         bg: 'blue.500',
                                     }}>
                                     Sign in
-                                </Button>
+                                </Button>}
                             </Stack>
                         </Stack>
                     </Box>
@@ -65,4 +106,15 @@ export default function Home() {
             </Flex>
         </>
     )
+}
+
+export async function getStaticProps() {
+    // Using the variables below in the browser will return `undefined`. Next.js doesn't
+    // expose environment variables unless they start with `NEXT_PUBLIC_`
+
+    return {
+        props: {
+            installed: process.env.INSTALLED
+        }
+    }
 }
