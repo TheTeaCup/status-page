@@ -8,13 +8,15 @@ import {
     Input,
     Link,
     Stack,
-    Text,
+    Text, useColorMode,
     useColorModeValue, useToast,
 } from '@chakra-ui/react';
 import {useState} from "react";
+import {MoonIcon, SunIcon} from "@chakra-ui/icons";
 
 export default function Home({installed}) {
     const toast = useToast();
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -79,6 +81,9 @@ export default function Home({installed}) {
                                     direction={{base: 'column', sm: 'row'}}
                                     align={'start'}
                                     justify={'space-between'}>
+                                    <Button onClick={toggleColorMode}>
+                                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                                    </Button>
                                     <Link target={'_blank'} href={'/password-reset'} color={'blue.400'}>Forgot
                                         password?</Link>
                                 </Stack>
