@@ -8,7 +8,7 @@ export default class Document extends NextDocument {
         return (
             <Html lang='en'>
                 <Head>
-                    <Script  strategy="beforeInteractive" id="loadtheme" dangerouslySetInnerHTML={{
+                    <Script strategy="beforeInteractive" id="loadtheme" dangerouslySetInnerHTML={{
                         __html: `(function setScript(initialValue) {
                         var mql = window.matchMedia("(prefers-color-scheme: dark)");
                         var systemPreference = mql.matches ? "dark" : "light";
@@ -31,13 +31,13 @@ export default class Document extends NextDocument {
 
                         if (colorMode) {
                         var root = document.documentElement;
-                        root.style.setProperty("--chakra-ui-color-mode", colorMode);
+                        root.style.setProperty("--chakra-ui-color-mode", 'dark);
                     }
                     })('dark')`}}
                     />
                 </Head>
                 <body>
-                <ColorModeScript initialColorMode={theme.config.initialColorMode}/>
+                <ColorModeScript/>
                 <Main/>
                 <NextScript/>
                 </body>
