@@ -114,7 +114,7 @@ export async function getStaticProps() {
 
     return {
         props: {
-            installed: process.env.INSTALLED
+            installed: process.env.INSTALLED || null
         }
     }
 }
