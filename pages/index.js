@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import {useState} from "react";
 import {MoonIcon, SunIcon} from "@chakra-ui/icons";
+import Head from "next/head";
 
 export default function Home({installed}) {
     const toast = useToast();
@@ -50,6 +51,13 @@ export default function Home({installed}) {
 
     return (
         <>
+            <Head>
+                <title>Tea Status - Login</title>
+                <meta property="og:title" content={'Tea Status - Login'} key="title"/>
+                <meta property="og:url" content={'https://statuspage.theteacup.dev'}/>
+                <meta property="og:description" content={'Custom built status page by Tea Cup'}/>
+                <meta name="description" content={'Custom built status page by Tea Cup'}/>
+            </Head>
             <Flex
                 minH={'100vh'}
                 align={'center'}
