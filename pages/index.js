@@ -1,4 +1,5 @@
 import {
+    Alert, AlertIcon,
     Box,
     Button,
     Flex,
@@ -11,12 +12,15 @@ import {
     Text, useColorMode,
     useColorModeValue, useToast,
 } from '@chakra-ui/react';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {MoonIcon, SunIcon} from "@chakra-ui/icons";
 import Head from "next/head";
+import fetchJson from "../utils/fetchJson";
+import Router from "next/router";
 
 export default function Home({installed}) {
     const toast = useToast();
+
     const { colorMode, toggleColorMode } = useColorMode();
 
     const [email, setEmail] = useState(null);
@@ -46,6 +50,70 @@ export default function Home({installed}) {
             })
         } else {
             // api submit
+            let data = {
+                email: email,
+                password: password
+            }
+
+            try {
+                let response = await fetchJson("/api/auth", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                       // 'CSRF-Token': csrfToken || null
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.error) {
+                    if (response.message === 'Needs Setup') {
+                        Router.push('/setup')
+                    } else if (response.message) {
+                        toast({
+                            title: 'API Error',
+                            description: `${response.message}`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        })
+
+                        setLoading(false);
+                    } else {
+                        toast({
+                            title: 'API Error',
+                            description: `Error Occurred, Check Logs`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        })
+                        setLoading(false);
+                    }
+                } else {
+                    if (response.message === "OK") {
+                        Router.push('/app')
+                    } else {
+                        toast({
+                            title: 'API Error',
+                            description: `Error Occurred, Check Logs`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        })
+                        setLoading(false);
+                    }
+                }
+
+            } catch (e) {
+                toast({
+                    title: 'API Error',
+                    description: `Error Occurred, Check Logs`,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+                setLoading(false);
+            }
+
         }
     }
 
@@ -58,6 +126,7 @@ export default function Home({installed}) {
                 <meta property="og:description" content={'Custom built status page by Tea Cup'}/>
                 <meta name="description" content={'Custom built status page by Tea Cup'}/>
             </Head>
+
             <Flex
                 minH={'100vh'}
                 align={'center'}

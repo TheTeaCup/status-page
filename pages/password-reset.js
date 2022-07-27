@@ -8,9 +8,18 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
+import Head from "next/head";
 
 export default function ForgotPasswordForm() {
     return (
+        <>
+            <Head>
+                <title>Tea Status - Password Reset</title>
+                <meta property="og:title" content={'Tea Status - Password Reset'} key="title"/>
+                <meta property="og:url" content={'https://statuspage.theteacup.dev/password-reset'}/>
+                <meta property="og:description" content={'Custom built status page by Tea Cup'}/>
+                <meta name="description" content={'Custom built status page by Tea Cup'}/>
+            </Head>
         <Flex
             minH={'100vh'}
             align={'center'}
@@ -52,5 +61,6 @@ export default function ForgotPasswordForm() {
                 </Stack>
             </Stack>
         </Flex>
+            </>
     );
 }
