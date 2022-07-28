@@ -7,22 +7,22 @@ import fetchJson from "../utils/fetchJson";
 function MyApp({Component, pageProps}) {
 
     const [databaseError, setDatabaseError] = useState(false);
-    useEffect( () => {
+    useEffect(() => {
         (async () => {
             let dbCheck = await fetchJson('/api/db-ping');
-            if(dbCheck.error) {
+            if (dbCheck.error) {
                 console.log(dbCheck);
                 console.log(dbCheck.message)
                 setDatabaseError(true)
             }
         })()
-    },[])
+    }, [])
 
 
     return (
         <ChakraProvider theme={theme}>
             {databaseError && <Alert position={'fixed'} variant='solid' status='error'>
-                <AlertIcon />
+                <AlertIcon/>
                 This site is unable to connect to its database.
             </Alert>
             }

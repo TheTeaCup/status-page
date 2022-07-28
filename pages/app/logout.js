@@ -1,11 +1,27 @@
 import Navbar from "../../components/nav";
-import {Box} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../utils/sessionSettings";
 import csrf from "../../utils/csrf";
+import {useEffect} from "react";
+import Router from 'next/router'
 
-export default function App_Home({user}) {
+export default function App_Logout({user}) {
+    useEffect(() => {
+        async function load() {
+            if (user) {
+                let res = await fetch(`/api/auth/logout`, {method: "GET"}).then(res => res.json());
+                //console.log(res)
+                if (!res.user) {
+                    Router.push("/?success=logged_out")
+                } else Router.push("/")
+            } else {
+                Router.push("/")
+            }
+        }
+
+        load()
+    }, [user])
 
     return (
         <>
@@ -20,7 +36,6 @@ export default function App_Home({user}) {
             <Navbar user={user}/>
 
 
-            <Box p={4}>App Home</Box>
         </>
     )
 }

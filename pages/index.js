@@ -1,5 +1,4 @@
 import {
-    Alert, AlertIcon,
     Box,
     Button,
     Flex,
@@ -9,19 +8,24 @@ import {
     Input,
     Link,
     Stack,
-    Text, useColorMode,
-    useColorModeValue, useToast,
+    Text,
+    useColorMode,
+    useColorModeValue,
+    useToast,
 } from '@chakra-ui/react';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {MoonIcon, SunIcon} from "@chakra-ui/icons";
 import Head from "next/head";
 import fetchJson from "../utils/fetchJson";
 import Router from "next/router";
+import {withIronSessionSsr} from "iron-session/next";
+import {sessionOptions} from "../utils/sessionSettings";
+import csrf from "../utils/csrf";
 
-export default function Home({installed}) {
+export default function Home({user}) {
     const toast = useToast();
 
-    const { colorMode, toggleColorMode } = useColorMode();
+    const {colorMode, toggleColorMode} = useColorMode();
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -30,7 +34,7 @@ export default function Home({installed}) {
     const login = async event => {
         event.preventDefault();
         setLoading(true);
-        if(!email) {
+        if (!email) {
             setLoading(false);
             toast({
                 title: 'Form Error',
@@ -39,7 +43,7 @@ export default function Home({installed}) {
                 duration: 9000,
                 isClosable: true,
             })
-        } else if(!password) {
+        } else if (!password) {
             setLoading(false);
             toast({
                 title: 'Form Error',
@@ -60,7 +64,7 @@ export default function Home({installed}) {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                       // 'CSRF-Token': csrfToken || null
+                        // 'CSRF-Token': csrfToken || null
                     },
                     body: JSON.stringify(data),
                 });
@@ -159,7 +163,7 @@ export default function Home({installed}) {
                                     align={'start'}
                                     justify={'space-between'}>
                                     <Button onClick={toggleColorMode}>
-                                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                                        {colorMode === 'light' ? <MoonIcon/> : <SunIcon/>}
                                     </Button>
                                     <Link target={'_blank'} href={'/password-reset'} color={'blue.400'}>Forgot
                                         password?</Link>
@@ -190,13 +194,24 @@ export default function Home({installed}) {
     )
 }
 
-export async function getStaticProps() {
-    // Using the variables below in the browser will return `undefined`. Next.js doesn't
-    // expose environment variables unless they start with `NEXT_PUBLIC_`
+export const getServerSideProps = withIronSessionSsr(async function ({req, res}) {
+    const user = req.session.user;
 
-    return {
-        props: {
-            installed: process.env.INSTALLED || null
+    await csrf(req, res);
+
+    if (user === undefined) {
+        return {
+            props: {
+                user: null,
+                csrfToken: req.csrfToken()
+            },
+        };
+    } else {
+        return {
+            redirect: {
+                destination: '/app',
+                permanent: false,
+            },
         }
     }
-}
+}, sessionOptions)

@@ -2,17 +2,16 @@ import {withIronSessionApiRoute} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import Redis from "../../../utils/redis"
 import * as crypto from "crypto";
-import csrf from "../../../utils/csrf";
 
 export default withIronSessionApiRoute(authLogin, sessionOptions);
 
 async function authLogin(req, res) {
     let SiteLogs = await Redis.get('site-logs');
     if (SiteLogs) SiteLogs = JSON.parse(SiteLogs);
-    if(!SiteLogs) SiteLogs = [];
+    if (!SiteLogs) SiteLogs = [];
 
     let Setup = await Redis.get('status-page-settings');
-    if(!Setup) return res.json({
+    if (!Setup) return res.json({
         error: true,
         message: "Needs Setup"
     });
@@ -41,20 +40,20 @@ async function authLogin(req, res) {
                 const passwordHash = crypto.pbkdf2Sync(req.body.password, salt, 10000, 512, 'sha512').toString('hex');
                 if (passwordHash === user.password) {
 
-                        user.lastSeen = Date.now();
-                        user.token = crypto.randomBytes(20).toString('hex');
+                    user.lastSeen = Date.now();
+                    user.token = crypto.randomBytes(20).toString('hex');
 
-                        let decipher = crypto.createDecipheriv('aes-256-cbc', process.env.SITECRYPTO, process.env.SITEIV);
-                        let decrypted = decipher.update(encrypted, 'base64', 'utf8');
+                    let decipher = crypto.createDecipheriv('aes-256-cbc', process.env.SITECRYPTO, process.env.SITEIV);
+                    let decrypted = decipher.update(encrypted, 'base64', 'utf8');
 
-                        Redis.set('user-' + encrypted, JSON.stringify(user));
-                        user.email = decrypted + decipher.final('utf8');
-                        user.encryptedEmail = encrypted;
-                        req.session.user = user;
-                        await req.session.save();
+                    Redis.set('user-' + encrypted, JSON.stringify(user));
+                    user.email = decrypted + decipher.final('utf8');
+                    user.encryptedEmail = encrypted;
+                    req.session.user = user;
+                    await req.session.save();
 
-                        // create user session then return a success message
-                        return res.json({error: false, message: "OK"})
+                    // create user session then return a success message
+                    return res.json({error: false, message: "OK"})
                 } else {
                     return res.json({error: true, message: "Invalid Email or Password"});
                 }

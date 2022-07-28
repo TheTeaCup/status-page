@@ -1,6 +1,5 @@
 import {ColorModeScript} from '@chakra-ui/react'
 import NextDocument, {Head, Html, Main, NextScript} from 'next/document'
-import theme from '../utils/theme'
 import Script from "next/script";
 
 export default class Document extends NextDocument {
@@ -33,7 +32,8 @@ export default class Document extends NextDocument {
                         var root = document.documentElement;
                         root.style.setProperty("--chakra-ui-color-mode", 'dark);
                     }
-                    })('dark')`}}
+                    })('dark')`
+                    }}
                     />
                 </Head>
                 <body>
