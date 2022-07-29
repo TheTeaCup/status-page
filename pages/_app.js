@@ -3,6 +3,21 @@ import '../styles/globals.css'
 import theme from "../utils/theme";
 import {useEffect, useState} from "react";
 import fetchJson from "../utils/fetchJson";
+import NProgress from 'nprogress';
+import {debounce} from 'lodash';
+import RouterEvents from "../utils/router-events";
+
+const start = debounce(NProgress.start, 100);
+RouterEvents.on('routeChangeStart', start);
+RouterEvents.on('routeChangeComplete', (url) => {
+    console.log(`Changed to URL: ${url}`);
+    start.cancel();
+    NProgress.done();
+});
+RouterEvents.on('routeChangeError', () => {
+    start.cancel();
+    NProgress.done();
+});
 
 function MyApp({Component, pageProps}) {
 

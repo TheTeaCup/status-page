@@ -1,43 +1,58 @@
 import {
-    Box,
-    Flex,
     Avatar,
-    HStack,
-    Link,
-    IconButton,
+    Box,
     Button,
+    Flex,
+    HStack,
+    IconButton,
+    Link,
     Menu,
     MenuButton,
-    MenuList,
-    MenuItem,
     MenuDivider,
-    useDisclosure,
-    useColorModeValue,
-    useColorMode,
+    MenuItem,
+    MenuList,
     Stack,
+    useColorMode,
+    useColorModeValue,
+    useDisclosure,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import {AddIcon, CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from '@chakra-ui/icons';
+import NextLink from "next/link"
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const Links = [
+    {
+        name: 'Dashboard',
+        to: '/'
+    },
+    {
+        name: 'Monitors',
+        to: '/monitors'
+    },
+    {
+        name: 'Pages',
+        to: '/pages'
+    },
+];
 
-const NavLink = ({ children }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'none',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={'#'}>
-        {children}
-    </Link>
+const NavLink = ({children}) => (
+    <NextLink href={'/app' + children.to || '#'} passHref>
+        <Link
+            px={2}
+            py={1}
+            rounded={'md'}
+            _hover={{
+                textDecoration: 'none',
+                bg: useColorModeValue('gray.200', 'gray.700'),
+            }}
+        >
+            {children.name || 'Loading'}
+        </Link>
+    </NextLink>
 );
 
 export default function Navbar({user}) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const { colorMode, toggleColorMode } = useColorMode();
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    const {colorMode, toggleColorMode} = useColorMode();
 
     return (
         <>
@@ -45,56 +60,84 @@ export default function Navbar({user}) {
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                     <IconButton
                         size={'md'}
-                        icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+                        icon={isOpen ? <CloseIcon/> : <HamburgerIcon/>}
                         aria-label={'Open Menu'}
-                        display={{ md: 'none' }}
+                        display={{md: 'none'}}
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box>Logo</Box>
+                        <Box>Status Page</Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
-                            display={{ base: 'none', md: 'flex' }}>
+                            display={{base: 'none', md: 'flex'}}>
                             {Links.map((link) => (
                                 <NavLink key={link}>{link}</NavLink>
                             ))}
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <Stack direction={'row'} spacing={7}>
-                        <Button onClick={toggleColorMode}>
-                            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                        <Button
+                            variant={'solid'}
+                            colorScheme={'teal'}
+                            size={'sm'}
+                            mr={4}
+                            display={{base: 'none', md: 'flex'}}
+                            leftIcon={<AddIcon/>}>
+                            Add
                         </Button>
+                        <Stack direction={'row'} spacing={7}>
+                            <Button onClick={toggleColorMode}>
+                                {colorMode === 'light' ? <MoonIcon/> : <SunIcon/>}
+                            </Button>
 
-                        <Menu>
-                            <MenuButton
-                                as={Button}
-                                rounded={'full'}
-                                variant={'link'}
-                                cursor={'pointer'}
-                                minW={0}>
-                                <Avatar
-                                    size={'sm'}
-                                    src={
-                                        'https://cdn.chatlaza.com/user/woah.png'
-                                    }
-                                />
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem>Link 1</MenuItem>
-                                <MenuItem>Link 2</MenuItem>
-                                <MenuDivider />
-                                <MenuItem as="a" href={'/app/logout'}>Logout</MenuItem>
-                            </MenuList>
-                        </Menu>
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    rounded={'full'}
+                                    variant={'link'}
+                                    cursor={'pointer'}
+                                    minW={0}>
+                                    <Avatar
+                                        size={'sm'}
+                                        src={
+                                            'https://cdn.chatlaza.com/user/woah.png'
+                                        }
+                                    />
+                                </MenuButton>
+                                <MenuList>
+                                    <NextLink href={'/app'} passHref>
+                                        <MenuItem>Home</MenuItem>
+                                    </NextLink>
+                                    <NextLink href={'/app/settings'} passHref>
+                                        <MenuItem>Settings</MenuItem>
+                                    </NextLink>
+                                    <MenuDivider/>
+                                    <NextLink href={'/app/logout'} passHref>
+                                        <MenuItem>Logout</MenuItem>
+                                    </NextLink>
+                                </MenuList>
+                            </Menu>
                         </Stack>
                     </Flex>
                 </Flex>
 
                 {isOpen ? (
-                    <Box pb={4} display={{ md: 'none' }}>
+                    <Box pb={4} display={{md: 'none'}}>
                         <Stack as={'nav'} spacing={4}>
+                            <NextLink href={'/app/create'} passHref>
+                                <Link
+                                    px={2}
+                                    py={1}
+                                    rounded={'md'}
+                                    _hover={{
+                                        textDecoration: 'none',
+                                        bg: useColorModeValue('gray.200', 'gray.700'),
+                                    }}
+                                >
+                                    Create
+                                </Link>
+                            </NextLink>
                             {Links.map((link) => (
                                 <NavLink key={link}>{link}</NavLink>
                             ))}
