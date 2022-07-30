@@ -77,6 +77,7 @@ export default function Navbar({user}) {
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
+                        <NextLink href={'/app/create'} passHref>
                         <Button
                             variant={'solid'}
                             colorScheme={'teal'}
@@ -86,6 +87,7 @@ export default function Navbar({user}) {
                             leftIcon={<AddIcon/>}>
                             Add
                         </Button>
+                        </NextLink>
                         <Stack direction={'row'} spacing={7}>
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? <MoonIcon/> : <SunIcon/>}
