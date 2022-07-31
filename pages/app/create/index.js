@@ -1,11 +1,50 @@
 import Navbar from "../../../components/nav";
-import {Box} from "@chakra-ui/react";
+import {
+    Avatar,
+    AvatarBadge,
+    Box, Button,
+    Center, Checkbox, Flex,
+    FormControl,
+    FormLabel,
+    Heading, IconButton, Input, Radio, RadioGroup,
+    Stack,
+    useColorModeValue, useToast
+} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
+import {useRouter} from "next/router";
+import {useState} from "react";
 
 export default function App_Create_Home({user}) {
+    const router = useRouter();
+    const toast = useToast();
+    const [value, setValue] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const onClick = () => {
+        setLoading(true);
+        if(value) {
+            setLoading(false);
+            toast({
+                title: 'Oops',
+                description: "This is not done yet :)",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        } else {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "It seems that you forgot to give a selection.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        }
+    }
 
     return (
         <>
@@ -20,7 +59,66 @@ export default function App_Create_Home({user}) {
             <Navbar user={user}/>
 
 
-            <Box p={4}>Create Home</Box>
+            <Flex
+
+                align={'center'}
+                justify={'center'}
+                bg={useColorModeValue('gray.50', 'gray.800')}>
+                <Stack
+                    spacing={4}
+                    w={'full'}
+                    maxW={'md'}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    rounded={'xl'}
+                    boxShadow={'lg'}
+                    p={6}
+                    my={12}>
+                    <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
+                        Adding Something New?
+                    </Heading>
+
+                    {/* selection */}
+                        <RadioGroup onChange={setValue} value={value} p={6}>
+                            <Stack>
+                                <Radio size={'lg'} value="monitor">Monitor</Radio>
+                                <Radio size={'lg'} value="page">Page</Radio>
+                            </Stack>
+                        </RadioGroup>
+
+                    <Stack spacing={6} direction={['column', 'row']}>
+                        <Button
+                            onClick={() => router.back()}
+                            bg={'red.400'}
+                            color={'white'}
+                            w="full"
+                            _hover={{
+                                bg: 'red.500',
+                            }}>
+                            Back
+                        </Button>
+
+                        {loading ? <Button
+                            isLoading
+                            bg={'blue.400'}
+                            color={'white'}
+                            w="full"
+                            _hover={{
+                                bg: 'blue.500',
+                            }}>
+                            Next
+                        </Button> : <Button
+                            onClick={onClick}
+                            bg={'blue.400'}
+                            color={'white'}
+                            w="full"
+                            _hover={{
+                                bg: 'blue.500',
+                            }}>
+                            Next
+                        </Button>}
+                    </Stack>
+                </Stack>
+            </Flex>
         </>
     )
 }

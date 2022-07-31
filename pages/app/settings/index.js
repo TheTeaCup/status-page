@@ -35,9 +35,6 @@ export default function App_Settings_Home({user}) {
 
             <Navbar user={user}/>
 
-
-
-
             <Flex
 
                 align={'center'}
