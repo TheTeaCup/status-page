@@ -49,7 +49,7 @@ export default function App_Create_Page({user}) {
                     p={6}
                     my={12}>
                     <Heading lineHeight={1.1} fontSize={{base: '2xl', sm: '3xl'}}>
-                        Monitor Creation Builder
+                        Page Creation Builder
                     </Heading>
 
                     {/* Fill Out Form */}
