@@ -22,15 +22,19 @@ import NextLink from "next/link"
 const Links = [
     {
         name: 'Dashboard',
-        to: '/'
+        to: '/admin'
     },
     {
         name: 'Monitors',
-        to: '/monitors'
+        to: '/admin/monitors'
     },
     {
         name: 'Pages',
-        to: '/pages'
+        to: '/admin/pages'
+    },
+    {
+        name: 'Users',
+        to: '/admin/users'
     },
 ];
 
@@ -50,7 +54,7 @@ const NavLink = ({children}) => (
     </NextLink>
 );
 
-export default function Navbar({user}) {
+export default function AdminNavbar({user}) {
     const {isOpen, onOpen, onClose} = useDisclosure();
     const {colorMode, toggleColorMode} = useColorMode();
 
@@ -77,17 +81,6 @@ export default function Navbar({user}) {
                         </HStack>
                     </HStack>
                     <Flex alignItems={'center'}>
-                        <NextLink href={'/app/create'} passHref>
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'teal'}
-                            size={'sm'}
-                            mr={4}
-                            display={{base: 'none', md: 'flex'}}
-                            leftIcon={<AddIcon/>}>
-                            Add
-                        </Button>
-                        </NextLink>
                         <Stack direction={'row'} spacing={7}>
                             <Button onClick={toggleColorMode}>
                                 {colorMode === 'light' ? <MoonIcon/> : <SunIcon/>}
@@ -108,15 +101,15 @@ export default function Navbar({user}) {
                                     />
                                 </MenuButton>
                                 <MenuList>
-                                    <NextLink href={'/app'} passHref>
+                                    <NextLink href={'/app/'} passHref>
                                         <MenuItem>Home</MenuItem>
                                     </NextLink>
                                     <NextLink href={'/app/settings'} passHref>
                                         <MenuItem>Settings</MenuItem>
                                     </NextLink>
-                                    {user?.admin && <NextLink href={'/app/admin'} passHref>
+                                    <NextLink href={'/app/admin'} passHref>
                                         <MenuItem>Admin Settings</MenuItem>
-                                    </NextLink>}
+                                    </NextLink>
                                     <MenuDivider/>
                                     <NextLink href={'/app/logout'} passHref>
                                         <MenuItem>Logout</MenuItem>
@@ -130,18 +123,6 @@ export default function Navbar({user}) {
                 {isOpen ? (
                     <Box pb={4} display={{md: 'none'}}>
                         <Stack as={'nav'} spacing={4}>
-                            <NextLink href={'/app/create'} passHref>
-                                <Link
-                                    px={2}
-                                    py={1}
-                                    rounded={'md'}
-                                    _hover={{
-                                        textDecoration: 'none',
-                                    }}
-                                >
-                                    Create
-                                </Link>
-                            </NextLink>
                             {Links.map((link) => (
                                 <NavLink key={link}>{link}</NavLink>
                             ))}

@@ -1,43 +1,31 @@
 import Navbar from "../../../components/nav";
-import {Button, Flex, Heading, Radio, RadioGroup, Stack, useColorModeValue, useToast} from "@chakra-ui/react";
+import {Button, Flex, Heading, Stack, useColorModeValue, useToast} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
-export default function App_Create_Home({user}) {
+export default function App_Create_Page({user}) {
     const router = useRouter();
-    const toast = useToast();
-    const [value, setValue] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        router.prefetch('/app/create/monitor');
-        router.prefetch('/app/create/page');
-    }, [])
+    const toast = useToast();
 
     const onClick = () => {
-        setLoading(true);
-        if (value) {
-            router.push('/app/create/' + value)
-        } else {
-            setLoading(false);
-            toast({
-                title: 'Form Error',
-                description: "It seems that you forgot to give a selection.",
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-            })
-        }
+        toast({
+            title: 'Form Error',
+            description: "Not Done",
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
     }
 
     return (
         <>
             <Head>
-                <title>Tea Status - App Create</title>
+                <title>Tea Status - App Create Status Page</title>
                 <meta property="og:title" content={'Tea Status - App'} key="title"/>
                 <meta property="og:url" content={'https://statuspage.theteacup.dev'}/>
                 <meta property="og:description" content={'Custom built status page by Tea Cup'}/>
@@ -61,16 +49,11 @@ export default function App_Create_Home({user}) {
                     p={6}
                     my={12}>
                     <Heading lineHeight={1.1} fontSize={{base: '2xl', sm: '3xl'}}>
-                        Adding Something New?
+                        Monitor Creation Builder
                     </Heading>
 
-                    {/* selection */}
-                    <RadioGroup onChange={setValue} value={value} p={6}>
-                        <Stack>
-                            <Radio size={'lg'} value="monitor">Monitor</Radio>
-                            <Radio size={'lg'} value="page">Page</Radio>
-                        </Stack>
-                    </RadioGroup>
+                    {/* Fill Out Form */}
+
 
                     <Stack spacing={6} direction={['column', 'row']}>
                         <Button

@@ -1,9 +1,10 @@
 import Navbar from "../../components/nav";
-import {Box} from "@chakra-ui/react";
+import {Box, chakra, SimpleGrid} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../utils/sessionSettings";
 import csrf from "../../utils/csrf";
+import StatsCard from "../../components/dash/statCard";
 
 export default function App_Home({user}) {
 
@@ -20,7 +21,59 @@ export default function App_Home({user}) {
             <Navbar user={user}/>
 
 
-            <Box p={4}>App Home</Box>
+            <Box maxW="7xl" mx={'auto'} pt={5} px={{base: 2, sm: 12, md: 17}}>
+                <chakra.h1
+                    textAlign={'center'}
+                    fontSize={'4xl'}
+                    py={10}
+                    fontWeight={'bold'}>
+                    Quick Stats
+                </chakra.h1>
+                <SimpleGrid columns={{base: 1, md: 3}} spacing={{base: 5, lg: 8}}>
+                    <StatsCard
+                        title={'Up'}
+                        stat={'0'}
+                        icon={
+                            <Box
+                                as="div"
+                                h="24px"
+                                w="24px"
+                                position="relative"
+                                bgColor={'green.500'}
+                                borderRadius="50%"
+                            />
+                        }
+                    />
+                    <StatsCard
+                        title={'Down'}
+                        stat={'0'}
+                        icon={
+                            <Box
+                                as="div"
+                                h="24px"
+                                w="24px"
+                                position="relative"
+                                bgColor={'red.400'}
+                                borderRadius="50%"
+                            />
+                        }
+                    />
+                    <StatsCard
+                        title={'Paused'}
+                        stat={'0'}
+                        icon={
+                            <Box
+                                as="div"
+                                h="24px"
+                                w="24px"
+                                position="relative"
+                                bgColor={'gray.400'}
+                                borderRadius="50%"
+                            />
+                        }
+                    />
+                </SimpleGrid>
+            </Box>
         </>
     )
 }

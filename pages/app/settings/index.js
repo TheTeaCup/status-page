@@ -1,25 +1,23 @@
 import Navbar from "../../../components/nav";
-import {Box} from "@chakra-ui/react";
-import Head from "next/head";
-import {withIronSessionSsr} from "iron-session/next";
-import {sessionOptions} from "../../../utils/sessionSettings";
-import csrf from "../../../utils/csrf";
 import {
+    Avatar,
+    AvatarBadge,
     Button,
+    Center,
     Flex,
     FormControl,
     FormLabel,
     Heading,
+    IconButton,
     Input,
     Stack,
-    useColorModeValue,
-    HStack,
-    Avatar,
-    AvatarBadge,
-    IconButton,
-    Center,
-} from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+    useColorModeValue
+} from "@chakra-ui/react";
+import Head from "next/head";
+import {withIronSessionSsr} from "iron-session/next";
+import {sessionOptions} from "../../../utils/sessionSettings";
+import csrf from "../../../utils/csrf";
+import {SmallCloseIcon} from '@chakra-ui/icons';
 
 export default function App_Settings_Home({user}) {
 
@@ -49,7 +47,7 @@ export default function App_Settings_Home({user}) {
                     boxShadow={'lg'}
                     p={6}
                     my={12}>
-                    <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
+                    <Heading lineHeight={1.1} fontSize={{base: '2xl', sm: '3xl'}}>
                         User Profile Edit
                     </Heading>
                     <FormControl id="userName">
@@ -64,7 +62,7 @@ export default function App_Settings_Home({user}) {
                                         top="-10px"
                                         colorScheme="red"
                                         aria-label="remove Image"
-                                        icon={<SmallCloseIcon />}
+                                        icon={<SmallCloseIcon/>}
                                     />
                                 </Avatar>
                             </Center>
@@ -77,7 +75,7 @@ export default function App_Settings_Home({user}) {
                         <FormLabel>User name</FormLabel>
                         <Input
                             placeholder="UserName"
-                            _placeholder={{ color: 'gray.500' }}
+                            _placeholder={{color: 'gray.500'}}
                             type="text"
                         />
                     </FormControl>
@@ -85,7 +83,7 @@ export default function App_Settings_Home({user}) {
                         <FormLabel>Email address</FormLabel>
                         <Input
                             placeholder="your-email@example.com"
-                            _placeholder={{ color: 'gray.500' }}
+                            _placeholder={{color: 'gray.500'}}
                             type="email"
                         />
                     </FormControl>
@@ -93,7 +91,7 @@ export default function App_Settings_Home({user}) {
                         <FormLabel>Password</FormLabel>
                         <Input
                             placeholder="password"
-                            _placeholder={{ color: 'gray.500' }}
+                            _placeholder={{color: 'gray.500'}}
                             type="password"
                         />
                     </FormControl>
