@@ -1,5 +1,16 @@
 import Navbar from "../../../components/nav";
-import {Button, Flex, Heading, Stack, useColorModeValue, useToast} from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading, HStack, Input, Select,
+    Spacer,
+    Stack,
+    useColorModeValue,
+    useToast
+} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
@@ -41,8 +52,12 @@ export default function App_Create_Monitor({user}) {
                 bg={useColorModeValue('gray.50', 'gray.800')}>
                 <Stack
                     spacing={4}
-                    w={'full'}
-                    maxW={'md'}
+                    width={[
+                        '90%', // 0-30em
+                        '50%', // 30em-48em
+                        '25%', // 48em-62em
+                        '30%', // 62em+
+                    ]}
                     bg={useColorModeValue('white', 'gray.700')}
                     rounded={'xl'}
                     boxShadow={'lg'}
@@ -52,8 +67,43 @@ export default function App_Create_Monitor({user}) {
                         Monitor Creation Builder
                     </Heading>
 
+                    <Spacer/>
                     {/* Fill Out Form */}
 
+                    {/*<FormControl id="name" isRequired>
+                        <FormLabel>Monitor Type</FormLabel>
+                    <Select isDisabled={false} placeholder='Select option'>
+                        <option value='https'>HTTP(s)</option>
+                    </Select>
+                    </FormControl>*/}
+
+                    <FormControl id="name" isRequired>
+                        <FormLabel>Monitor Name</FormLabel>
+                        <Input
+                            placeholder="Name this monitor"
+                            _placeholder={{ color: 'gray.500' }}
+                            type="text"
+                        />
+                    </FormControl>
+
+                    {/*<Stack spacing={4}>
+                        <HStack>
+                            <Box>
+                                <FormControl id="name" isRequired>
+                                    <FormLabel>Monitor Name</FormLabel>
+                                    <Input
+                                        placeholder="Name this monitor"
+                                        _placeholder={{ color: 'gray.500' }}
+                                        type="text"
+                                    />
+                                </FormControl>
+                            </Box>
+                        </HStack>
+                    </Stack>*/}
+
+
+
+                    <Spacer/>
 
                     <Stack spacing={6} direction={['column', 'row']}>
                         <Button
