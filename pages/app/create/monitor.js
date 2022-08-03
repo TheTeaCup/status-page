@@ -5,9 +5,13 @@ import {
     Flex,
     FormControl,
     FormLabel,
-    Heading, HStack, Input, Select,
+    Heading,
+    HStack,
+    Input,
+    Select,
     Spacer,
     Stack,
+    Textarea,
     useColorModeValue,
     useToast
 } from "@chakra-ui/react";
@@ -23,14 +27,63 @@ export default function App_Create_Monitor({user}) {
     const [loading, setLoading] = useState(false);
     const toast = useToast();
 
-    const onClick = () => {
-        toast({
-            title: 'Form Error',
-            description: "Not Done",
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-        })
+    // form items
+    const [type, setType] = useState('https');
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        setLoading(true);
+
+        let type = event.target.type.value;
+        let name = event.target.name.value;
+        let url = event.target.url.value;
+        let heart = event.target.heart.value;
+        let retires = event.target.retires.value;
+        let method = event.target.method.value;
+        let body = event.target.body.value;
+        let headers = event.target.headers.value;
+
+        if (body) {
+            // validate body data
+            try {
+                JSON.parse(body);
+            } catch (e) {
+                toast({
+                    title: 'Form Error',
+                    description: "Incorrect format of Body.",
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+        }
+
+        if (headers) {
+            // validate headers data
+            try {
+                JSON.parse(headers);
+            } catch (e) {
+                toast({
+                    title: 'Form Error',
+                    description: "Incorrect format of Headers.",
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+        }
+
+        if (type === 'https') {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "Not Done",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+
     }
 
     return (
@@ -45,100 +98,174 @@ export default function App_Create_Monitor({user}) {
 
             <Navbar user={user}/>
 
+            <form onSubmit={onSubmit}>
 
-            <Flex
-                align={'center'}
-                justify={'center'}
-                bg={useColorModeValue('gray.50', 'gray.800')}>
-                <Stack
-                    spacing={4}
-                    width={[
-                        '90%', // 0-30em
-                        '50%', // 30em-48em
-                        '25%', // 48em-62em
-                        '30%', // 62em+
-                    ]}
-                    bg={useColorModeValue('white', 'gray.700')}
-                    rounded={'xl'}
-                    boxShadow={'lg'}
-                    p={6}
-                    my={12}>
-                    <Heading lineHeight={1.1} fontSize={{base: '2xl', sm: '3xl'}}>
-                        Monitor Creation Builder
-                    </Heading>
+                <Flex
+                    align={'center'}
+                    justify={'center'}
+                    bg={useColorModeValue('gray.50', 'gray.800')}>
+                    <Stack
+                        spacing={4}
+                        width={[
+                            '90%', // 0-30em
+                            '50%', // 30em-48em
+                            '25%', // 48em-62em
+                            '30%', // 62em+
+                        ]}
+                        bg={useColorModeValue('white', 'gray.700')}
+                        rounded={'xl'}
+                        boxShadow={'lg'}
+                        p={6}
+                        my={12}>
+                        <Heading lineHeight={1.1} fontSize={{base: '2xl', sm: '3xl'}}>
+                            Monitor Creation Builder
+                        </Heading>
 
-                    <Spacer/>
-                    {/* Fill Out Form */}
+                        <Spacer/>
+                        {/* Fill Out Form */}
 
-                    {/*<FormControl id="name" isRequired>
-                        <FormLabel>Monitor Type</FormLabel>
-                    <Select isDisabled={false} placeholder='Select option'>
-                        <option value='https'>HTTP(s)</option>
-                    </Select>
-                    </FormControl>*/}
 
-                    <FormControl id="name" isRequired>
-                        <FormLabel>Monitor Name</FormLabel>
-                        <Input
-                            placeholder="Name this monitor"
-                            _placeholder={{ color: 'gray.500' }}
-                            type="text"
-                        />
-                    </FormControl>
+                        <FormControl id="type" isRequired>
+                            <FormLabel>Type</FormLabel>
+                            <Select isDisabled={true} placeholder='Select option'>
+                                <option selected={true} value='https'>HTTP(s)</option>
+                            </Select>
+                        </FormControl>
 
-                    {/*<Stack spacing={4}>
-                        <HStack>
-                            <Box>
-                                <FormControl id="name" isRequired>
-                                    <FormLabel>Monitor Name</FormLabel>
-                                    <Input
-                                        placeholder="Name this monitor"
-                                        _placeholder={{ color: 'gray.500' }}
-                                        type="text"
-                                    />
+                        <FormControl id="name" isRequired>
+                            <FormLabel>Name</FormLabel>
+                            <Input
+                                placeholder="Name this monitor"
+                                _placeholder={{color: 'gray.500'}}
+                                type="text"
+                            />
+                        </FormControl>
+
+                        <FormControl id="url" isRequired>
+                            <FormLabel>Source</FormLabel>
+                            <Input
+                                placeholder="example.com"
+                                _placeholder={{color: 'gray.500'}}
+                                type="text"
+                                pattern="https?://.+"
+                            />
+                        </FormControl>
+
+                        <Stack spacing={6}>
+                            <HStack>
+
+                                <Box>
+                                    <FormControl id="heart">
+                                        <FormLabel>Heartbeat Interval</FormLabel>
+                                        <Input
+                                            type="number"
+                                            defaultValue={60}
+                                            min={20}
+                                        />
+                                    </FormControl>
+                                </Box>
+
+                                <Box>
+                                    <FormControl id="retires">
+                                        <FormLabel>Retries</FormLabel>
+                                        <Input
+                                            type="number"
+                                            min={0}
+                                        />
+                                    </FormControl>
+                                </Box>
+
+                            </HStack>
+                        </Stack>
+
+                        {type === 'https' &&
+                            <>
+                                <FormControl id="method">
+                                    <FormLabel>Method</FormLabel>
+                                    <Select placeholder='Select option'>
+                                        <option selected={true} value="GET">
+                                            GET
+                                        </option>
+                                        <option value="POST">
+                                            POST
+                                        </option>
+                                        <option value="PUT">
+                                            PUT
+                                        </option>
+                                        <option value="PATCH">
+                                            PATCH
+                                        </option>
+                                        <option value="DELETE">
+                                            DELETE
+                                        </option>
+                                        <option value="HEAD">
+                                            HEAD
+                                        </option>
+                                        <option value="OPTIONS">
+                                            OPTIONS
+                                        </option>
+                                    </Select>
                                 </FormControl>
-                            </Box>
-                        </HStack>
-                    </Stack>*/}
+                            </>}
 
+                        <FormControl id="body">
+                            <FormLabel>Request Body</FormLabel>
+                            <Textarea
+                                placeholder={`{
+    "key": "value"
+}`}
+                                _placeholder={{color: 'gray.500'}}
+                            />
+                        </FormControl>
 
+                        <FormControl id="headers">
+                            <FormLabel>Request Headers</FormLabel>
+                            <Textarea
+                                placeholder={`{
+    "HeaderName": "HeaderValue"
+}`}
+                                _placeholder={{color: 'gray.500'}}
+                            />
+                        </FormControl>
 
-                    <Spacer/>
+                        <Spacer/>
 
-                    <Stack spacing={6} direction={['column', 'row']}>
-                        <Button
-                            onClick={() => router.back()}
-                            bg={'red.400'}
-                            color={'white'}
-                            w="full"
-                            _hover={{
-                                bg: 'red.500',
-                            }}>
-                            Back
-                        </Button>
+                        <Stack spacing={6} direction={['column', 'row']}>
+                            <Button
+                                onClick={() => router.back()}
+                                bg={'red.400'}
+                                color={'white'}
+                                w="full"
+                                _hover={{
+                                    bg: 'red.500',
+                                }}>
+                                Back
+                            </Button>
 
-                        {loading ? <Button
-                            isLoading
-                            bg={'blue.400'}
-                            color={'white'}
-                            w="full"
-                            _hover={{
-                                bg: 'blue.500',
-                            }}>
-                            Next
-                        </Button> : <Button
-                            onClick={onClick}
-                            bg={'blue.400'}
-                            color={'white'}
-                            w="full"
-                            _hover={{
-                                bg: 'blue.500',
-                            }}>
-                            Next
-                        </Button>}
+                            {loading ? <Button
+                                isLoading
+                                bg={'blue.400'}
+                                color={'white'}
+                                w="full"
+                                _hover={{
+                                    bg: 'blue.500',
+                                }}>
+                                Next
+                            </Button> : <Button
+                                bg={'blue.400'}
+                                color={'white'}
+                                w="full"
+                                type="submit"
+                                _hover={{
+                                    bg: 'blue.500',
+                                }}>
+                                Next
+                            </Button>}
+                        </Stack>
+
                     </Stack>
-                </Stack>
-            </Flex>
+                </Flex>
+            </form>
         </>
     )
 }
