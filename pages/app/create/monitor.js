@@ -21,6 +21,8 @@ import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
 import {useState} from "react";
 import {useRouter} from "next/router";
+import {validateJSON} from "../../../utils";
+import * as api from "../../../utils/api";
 
 export default function App_Create_Monitor({user}) {
     const router = useRouter();
@@ -30,9 +32,10 @@ export default function App_Create_Monitor({user}) {
     // form items
     const [type, setType] = useState('https');
 
-    const onSubmit = (event) => {
+    const onSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
+        let ready = true;
 
         let type = event.target.type.value;
         let name = event.target.name.value;
@@ -45,9 +48,10 @@ export default function App_Create_Monitor({user}) {
 
         if (body) {
             // validate body data
-            try {
-                JSON.parse(body);
-            } catch (e) {
+            let bodyTest = validateJSON(body);
+            if (!bodyTest) {
+                ready = false;
+                setLoading(false);
                 toast({
                     title: 'Form Error',
                     description: "Incorrect format of Body.",
@@ -60,9 +64,10 @@ export default function App_Create_Monitor({user}) {
 
         if (headers) {
             // validate headers data
-            try {
-                JSON.parse(headers);
-            } catch (e) {
+            let headersTest = validateJSON(headers);
+            if (!headersTest) {
+                ready = false;
+                setLoading(false);
                 toast({
                     title: 'Form Error',
                     description: "Incorrect format of Headers.",
@@ -73,15 +78,55 @@ export default function App_Create_Monitor({user}) {
             }
         }
 
-        if (type === 'https') {
-            setLoading(false);
-            toast({
-                title: 'Form Error',
-                description: "Not Done",
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-            });
+        if (ready) {
+            if (type === 'https') {
+
+                // continue with processing
+
+                try {
+                    let data = {
+                        user: user.email,
+                        type: type || 'http',
+                        name: name || 'null',
+                        source: url || 'http://',
+                        heartBeat: heart || 60,
+                        retires: retires,
+                        method: method || 'GET',
+                        body: body || null,
+                        headers: headers || null,
+                    }
+
+                    let newMonitor = await api.newMonitor(user.token, data);
+                    console.log(newMonitor);
+
+                    if (newMonitor.error) {
+                        setLoading(false);
+                        toast({
+                            title: 'Form Error',
+                            description: `${newMonitor?.message || 'API Error, Check Logs.'}`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        });
+                    } else {
+                        // worked???
+                        if (newMonitor.id) {
+                            router.push('/app/monitors/' + newMonitor.id)
+                        } else router.push('/app')
+
+                    }
+                } catch (e) {
+                    setLoading(false);
+                    toast({
+                        title: 'Form Error',
+                        description: "Something weird happened, please contact support.",
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                }
+
+            }
         }
 
     }

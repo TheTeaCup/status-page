@@ -107,3 +107,12 @@ export const invertHex = (hexProp, smooth = true) => {
 };
 
 export const isProd = process.env.NODE_ENV === 'production';
+
+export const validateJSON = (value) => {
+    try {
+        JSON.parse(value);
+        return true;
+    } catch (e) {
+        return false;
+    }
+};

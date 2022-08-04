@@ -1,12 +1,16 @@
 import Navbar from "../../components/nav";
-import {Box, chakra, SimpleGrid} from "@chakra-ui/react";
+import {Box, Center, chakra, Divider, SimpleGrid, Spacer} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../utils/sessionSettings";
 import csrf from "../../utils/csrf";
 import StatsCard from "../../components/dash/statCard";
+import {useState} from "react";
+import Monitor from "../../components/dash/monitor";
+import {v4 as uuidv4} from 'uuid';
 
 export default function App_Home({user}) {
+    const [monitors, setMonitors] = useState(user?.monitors || [])
 
     return (
         <>
@@ -74,6 +78,39 @@ export default function App_Home({user}) {
                     />
                 </SimpleGrid>
             </Box>
+
+            <br/>
+            <center>
+                <Box maxW="7xl">
+                    <Spacer/>
+                    <Divider/>
+                    <Spacer/>
+                </Box>
+            </center>
+            <br/>
+
+            <Box maxW="7xl" mx={'auto'} pt={5} px={{base: 2, sm: 12, md: 17}}>
+                {monitors ? (
+                    <>
+                        <center>
+                            {monitors.map(monitor => {
+                                return <Monitor key={uuidv4()} data={monitor}/>
+                            })}
+                        </center>
+                    </>
+                ) : (
+                    <>
+                        <chakra.h1
+                            textAlign={'center'}
+                            fontSize={'4xl'}
+                            py={10}
+                            fontWeight={'bold'}>
+                            Create a Monitor using the Create button!
+                        </chakra.h1>
+                    </>
+                )}
+            </Box>
+
         </>
     )
 }
