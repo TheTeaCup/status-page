@@ -2,6 +2,7 @@ import {withIronSessionApiRoute} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import Redis from "../../../utils/redis"
 import * as crypto from "crypto";
+import pack from '../../../package.json';
 
 export default withIronSessionApiRoute(authLogin, sessionOptions);
 
@@ -41,17 +42,16 @@ async function authLogin(req, res) {
                 if (passwordHash === user.password) {
 
                     user.lastSeen = Date.now();
-                    user.token = crypto.randomBytes(20).toString('hex');
-
+                    user.version = pack.version || '0.0.0';
                     let decipher = crypto.createDecipheriv('aes-256-cbc', process.env.SITECRYPTO, process.env.SITEIV);
                     let decrypted = decipher.update(encrypted, 'base64', 'utf8');
 
                     Redis.set('user-' + encrypted, JSON.stringify(user));
+                    Redis.set(user.token , encrypted);
                     user.email = decrypted + decipher.final('utf8');
                     user.encryptedEmail = encrypted;
                     req.session.user = user;
                     await req.session.save();
-
                     // create user session then return a success message
                     return res.json({error: false, message: "OK"})
                 } else {

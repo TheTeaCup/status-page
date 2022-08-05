@@ -22,6 +22,7 @@ RouterEvents.on('routeChangeError', () => {
 function MyApp({Component, pageProps}) {
 
     const [databaseError, setDatabaseError] = useState(false);
+    const [version, setVersion] = useState('0.0.0');
     useEffect(() => {
         (async () => {
             let dbCheck = await fetchJson('/api/db-ping');
@@ -29,6 +30,11 @@ function MyApp({Component, pageProps}) {
                 console.log(dbCheck);
                 console.log(dbCheck.message)
                 setDatabaseError(true)
+            }
+
+            let versionCheck = await fetchJson('/api/version');
+            if (versionCheck.message === "OK") {
+                setVersion(versionCheck.version);
             }
         })()
     }, [])
@@ -41,7 +47,7 @@ function MyApp({Component, pageProps}) {
                 This site is unable to connect to its database.
             </Alert>
             }
-            <Component {...pageProps} />
+            <Component {...pageProps} version={version} />
         </ChakraProvider>
     )
 }

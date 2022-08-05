@@ -9,6 +9,17 @@ const newMonitor = async function (Token, body) {
     }).then(res => res.json());
 };
 
+const getMonitor = async function (ID, Auth) {
+    return await fetch(`/api/monitor/${ID}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': Auth || null
+        },
+    }).then(res => res.json());
+};
+
 export {
     newMonitor,
+    getMonitor
 }

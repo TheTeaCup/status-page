@@ -3,6 +3,7 @@ import {sessionOptions} from "../../utils/sessionSettings";
 import Redis from "../../utils/redis"
 import * as crypto from "crypto";
 import csrf from "../../utils/csrf";
+import pack from '../../package.json';
 
 export default withIronSessionApiRoute(authLogin, sessionOptions);
 
@@ -62,17 +63,19 @@ async function authLogin(req, res) {
                 banned: false,
                 avatarURL: null,
                 token: crypto.randomBytes(20).toString('hex'),
-                monitors: []
+                monitors: [],
+                version: pack.version || '0.0.0'
             };
 
             Redis.set('user-' + encrypted, JSON.stringify(userData));
+            await Redis.incr("users");
 
             userData.email = req.body.email;
             req.session.user = userData;
             await req.session.save();
 
             let siteSettings = {
-                setup: false,
+                setup: true,
                 domain: 'https://example.com',
                 maintenance: false
             }

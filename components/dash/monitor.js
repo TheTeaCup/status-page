@@ -1,15 +1,23 @@
 import {
     Box,
-    Flex,
+    Flex, Spinner,
     Stat,
     StatLabel,
     StatNumber, Text,
     useColorModeValue,
 } from '@chakra-ui/react';
 import Link from "next/link";
+import {useState} from "react";
 
 export default function Monitor(props) {
     const { data } = props;
+    const [status, setStatus] = useState('awaiting');
+    const [loading, setLoading] = useState(true);
+
+    const fetch = async() => {
+
+    }
+
     return (
         <Link href={'/app/monitors/' + data?.id || ''}>
             <Box
@@ -22,7 +30,7 @@ export default function Monitor(props) {
                 rounded={'lg'}>
                 <Flex justifyContent={'space-between'}>
                     <Box pl={{ base: 2, md: 4 }}>
-                        <Text fontSize={'2xl'} fontWeight={'medium'} isTruncated>
+                        <Text fontSize={'2xl'} fontWeight={'medium'}>
                             {data?.name || 'Loading...'}
                         </Text>
                     </Box>
@@ -30,14 +38,13 @@ export default function Monitor(props) {
                         my={'auto'}
                         color={useColorModeValue('gray.800', 'gray.200')}
                         alignContent={'center'}>
-                        <Box
-                            as="div"
-                            h="24px"
-                            w="24px"
-                            position="relative"
-                            bgColor={'gray.400'}
-                            borderRadius="50%"
-                        />
+
+                        {loading ? <Spinner as="div"
+                                            h="24px"
+                                            w="24px"
+                                            position="relative"
+                                            borderRadius="50%" /> : <></>}
+
                     </Box>
                 </Flex>
             </Box>
