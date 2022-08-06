@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import fetchJson from "../../utils/fetchJson";
 import {useRouter} from "next/router";
 
-export default function App_Home({user, version}) {
+export default function App_Home({user}) {
     const [monitors, setMonitors] = useState(user?.monitors || []);
     const [statuses, setStatuses] = useState({
         online: 0,
@@ -21,11 +21,15 @@ export default function App_Home({user, version}) {
 
     useEffect(() => {
         (async () => {
-            let userCheck = await fetchJson('/api/auth/check');
-            if (userCheck.user) {
-                let uVersion = userCheck.user.version;
-                if (!uVersion === version) {
-                    router.push('/app/logout');
+
+            let versionCheck = await fetchJson('/api/version');
+            if (versionCheck.version) {
+                let userCheck = await fetchJson('/api/auth/check');
+                if (userCheck.user) {
+                    let uVersion = userCheck.user.version;
+                    if (uVersion !== versionCheck.version) {
+                        router.push('/app/logout');
+                    }
                 }
             }
         })()
