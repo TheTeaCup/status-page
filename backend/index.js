@@ -43,4 +43,4 @@ async function update() {
 
 require('./server.js');
 // not done
-require('./tracker/index');
+//require('./tracker/index');
