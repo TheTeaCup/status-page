@@ -1,5 +1,6 @@
 import Redis from "../../../../utils/redis"
 import * as crypto from "crypto";
+import async from "async";
 
 export default async function handler(req, res) {
     try {
@@ -32,11 +33,46 @@ export default async function handler(req, res) {
             message: "Invalid authorization header"
         });
 
-        res.json({
-            error: false,
-            message: "OK",
-            user: user
-        });
+        // fetch monitor statuses
+        let data = {
+            online: 0,
+            offline: 0,
+            unknown: 0,
+            paused: 0
+        };
+
+        await async.map(user.monitors, function (key, cb) {
+            Redis.get(`monitors-${key.id}`, function (error, value) {
+                if (error) return cb(error);
+                if (value) {
+                    value = JSON.parse(value);
+                    delete value.headers;
+                    delete value.body;
+
+                    if (value.status === 'up') {
+                        data["online"] = data.online + 1
+                    } else if (value.status === 'offline') {
+                        data["offline"] = data.offline + 1
+                    } else if (value.status === 'paused') {
+                        data["paused"] = data.paused + 1
+                    } else {
+                        data["unknown"] = data.unknown + 1
+                    }
+
+                    cb(null, value);
+                } else {
+                    cb(null, value);
+                }
+            })
+        }, async function (error, results) {
+
+            return res.json({
+                error: false,
+                message: "OK",
+                data: data
+            });
+
+        })
 
     } catch (e) {
         console.log(e)

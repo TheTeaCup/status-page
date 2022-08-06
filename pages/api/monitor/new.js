@@ -34,12 +34,12 @@ export default async function handler(req, res) {
             });
 
             let body = null;
-            if(req.body.body) {
+            if (req.body.body) {
                 body = JSON.stringify(req.body.body)
             }
 
             let headers = null;
-            if(req.body.headers) {
+            if (req.body.headers) {
                 headers = JSON.stringify(req.body.headers)
             }
 
@@ -71,7 +71,7 @@ export default async function handler(req, res) {
                 headers: headers,
                 createdAt: Date.now(),
                 lastCheck: null,
-                status: 'awaiting',
+                status: 'unknown',
                 createdBy: user.id,
                 users: [`${user.id}`]
             }

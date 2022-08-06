@@ -47,7 +47,7 @@ async function authLogin(req, res) {
                     let decrypted = decipher.update(encrypted, 'base64', 'utf8');
 
                     Redis.set('user-' + encrypted, JSON.stringify(user));
-                    Redis.set(user.token , encrypted);
+                    Redis.set(user.token, encrypted);
                     user.email = decrypted + decipher.final('utf8');
                     user.encryptedEmail = encrypted;
                     req.session.user = user;

@@ -47,7 +47,7 @@ function MyApp({Component, pageProps}) {
                 This site is unable to connect to its database.
             </Alert>
             }
-            <Component {...pageProps} version={version} />
+            <Component {...pageProps} version={version}/>
         </ChakraProvider>
     )
 }

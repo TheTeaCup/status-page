@@ -9,24 +9,24 @@ export default async function handler(req, res) {
         })
 
         let aUser = await Redis.get(req.headers.authorization);
-        if(!aUser) return res.json({
+        if (!aUser) return res.json({
             error: true,
             message: "Invalid authorization header"
         })
 
         let user = await Redis.get('user-' + aUser);
-        if(!user) return res.json({
+        if (!user) return res.json({
             error: true,
             message: "No user found"
         })
         user = JSON.parse(user);
 
-        if(!user.authorization === req.headers.authorization) return res.json({
+        if (!user.authorization === req.headers.authorization) return res.json({
             error: true,
             message: "Invalid authorization header"
         })
 
-        let usersKeys = await Redis.keys('users-*')
+        let usersKeys = await Redis.keys('user-*')
 
         res.json({
             error: false,

@@ -1,13 +1,19 @@
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
-import {sessionOptions} from "../../../utils/sessionSettings";
-import csrf from "../../../utils/csrf";
-import AdminNavbar from "../../../components/admin-nav";
+import {sessionOptions} from "../../../../utils/sessionSettings";
+import csrf from "../../../../utils/csrf";
+import AdminNavbar from "../../../../components/admin-nav";
 import {
-    Box,
     Button,
     Center,
-    chakra, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spacer,
+    chakra, FormControl, FormLabel, Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay, Stack,
     Table,
     TableContainer,
     Tbody,
@@ -15,18 +21,20 @@ import {
     Tfoot,
     Th,
     Thead,
-    Tr, useDisclosure,
+    Tr, useColorModeValue,
+    useDisclosure,
     useToast,
 } from '@chakra-ui/react'
 import {AddIcon, EditIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
-import fetchJson from "../../../utils/fetchJson";
+import fetchJson from "../../../../utils/fetchJson";
 import {v4 as uuidv4} from 'uuid';
+import {useRouter} from "next/router";
 
 export default function App_Admin_Home({user}) {
     const [users, setUsers] = useState([]);
     const toast = useToast();
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const router = useRouter();
 
     useEffect(() => {
         (async () => {
@@ -35,7 +43,7 @@ export default function App_Admin_Home({user}) {
                     'Authorization': user.token || null,
                 },
             });
-            if(fetchAllUsers.error) {
+            if (fetchAllUsers.error) {
                 toast({
                     title: 'API Error',
                     description: `${fetchAllUsers.message || 'Unknown Error'}`,
@@ -44,7 +52,7 @@ export default function App_Admin_Home({user}) {
                     isClosable: true,
                 })
             } else {
-                if(fetchAllUsers.users) {
+                if (fetchAllUsers.users) {
                     setUsers(fetchAllUsers.users)
                 } else {
                     toast({
@@ -88,7 +96,7 @@ export default function App_Admin_Home({user}) {
                     colorScheme={'teal'}
                     size={'sm'}
                     mr={4}
-                    onClick={onOpen}
+                    onClick={() => router.push('/app/admin/users/new')}
                     display={{base: 'none', md: 'flex'}}
                     leftIcon={<AddIcon/>}>
                     New User
@@ -130,25 +138,6 @@ export default function App_Admin_Home({user}) {
                     </Table>
                 </TableContainer>
             </Center>
-
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit officia tempor esse quis.
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                        <Button variant='ghost'>Secondary Action</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-
         </>
     )
 }

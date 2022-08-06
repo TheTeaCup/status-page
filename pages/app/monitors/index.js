@@ -5,11 +5,26 @@ import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
 import Monitor from "../../../components/dash/monitor";
-import {v4 as uuidv4} from "uuid";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import fetchJson from "../../../utils/fetchJson";
 
 export default function App_Monitors_Home({user}) {
-    const [monitors, setMonitors] = useState(user?.monitors || [])
+    const [monitors, setMonitors] = useState(user?.monitors || []);
+
+    useEffect(() => {
+        (async () => {
+            let userCheck = await fetchJson('/api/user/' + user.email, {
+                "headers": {
+                    "Authorization": user.token
+                }
+            });
+            if (userCheck.user) {
+                if (userCheck.user.monitors) {
+                    setMonitors(userCheck.user.monitors)
+                }
+            }
+        })()
+    }, [])
 
     return (
         <>
@@ -37,7 +52,7 @@ export default function App_Monitors_Home({user}) {
                     <>
                         <center>
                             {monitors.map(monitor => {
-                                return <Monitor key={uuidv4()} data={monitor}/>
+                                return <Monitor key={monitor.id} data={monitor}/>
                             })}
                         </center>
                     </>

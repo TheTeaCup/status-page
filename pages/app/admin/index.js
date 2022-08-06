@@ -49,7 +49,7 @@ export default function App_Admin_Home({user, stats, version}) {
                     fontWeight={'bold'}>
                     Quick Stats
                 </chakra.h1>
-                <SimpleGrid columns={{base: 1, md: 3}} spacing={{base: 5, lg: 8}}>
+                <SimpleGrid columns={{base: 1, md: 4}} spacing={{base: 5, lg: 8}}>
                     <StatsCard
                         title={'Monitors'}
                         stat={stats?.monitors || "0"}
@@ -115,7 +115,9 @@ export const getServerSideProps = withIronSessionSsr(async function ({req, res})
                     'Authorization': user.token || null,
                 },
             }).then(res => res.json());
-             if(stats.stats) {stats = stats.stats } else stats = {}
+            if (stats.stats) {
+                stats = stats.stats
+            } else stats = {}
 
             return {
                 props: {

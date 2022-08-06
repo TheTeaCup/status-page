@@ -11,6 +11,10 @@ export default function StatsCard(props) {
     const { title, stat, icon } = props;
     return (
         <Stat
+            css={{
+
+            }}
+            size={'sm'}
             px={{ base: 2, md: 4 }}
             py={'4'}
             shadow={'xl'}

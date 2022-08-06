@@ -1,18 +1,22 @@
 import Navbar from "../../components/nav";
-import {Box, Center, chakra, Divider, SimpleGrid, Spacer} from "@chakra-ui/react";
+import {Box, chakra, SimpleGrid} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../utils/sessionSettings";
 import csrf from "../../utils/csrf";
 import StatsCard from "../../components/dash/statCard";
 import {useEffect, useState} from "react";
-import Monitor from "../../components/dash/monitor";
-import {v4 as uuidv4} from 'uuid';
 import fetchJson from "../../utils/fetchJson";
 import {useRouter} from "next/router";
 
 export default function App_Home({user, version}) {
     const [monitors, setMonitors] = useState(user?.monitors || []);
+    const [statuses, setStatuses] = useState({
+        online: 0,
+        offline: 0,
+        unknown: 0,
+        paused: 0
+    });
     const router = useRouter();
 
     useEffect(() => {
@@ -20,12 +24,28 @@ export default function App_Home({user, version}) {
             let userCheck = await fetchJson('/api/auth/check');
             if (userCheck.user) {
                 let uVersion = userCheck.user.version;
-                if(!uVersion === version) {
+                if (!uVersion === version) {
                     router.push('/app/logout');
                 }
             }
         })()
     }, [])
+
+    useEffect(() => {
+        (async () => {
+            let userMonitorStatusesCheck = await fetchJson('/api/user/' + user.email + "/monitor-statuses", {
+                "headers": {
+                    "Authorization": user.token
+                }
+            });
+
+            console.log(userMonitorStatusesCheck);
+            if (userMonitorStatusesCheck.data) {
+                setStatuses(userMonitorStatusesCheck.data)
+            }
+
+        })()
+    }, []);
 
     return (
         <>
@@ -48,10 +68,10 @@ export default function App_Home({user, version}) {
                     fontWeight={'bold'}>
                     Quick Stats
                 </chakra.h1>
-                <SimpleGrid columns={{base: 1, md: 3}} spacing={{base: 5, lg: 8}}>
+                <SimpleGrid columns={{base: 1, md: 4}} spacing={{base: 2, lg: 5}}>
                     <StatsCard
                         title={'Up'}
-                        stat={'0'}
+                        stat={statuses?.online || 0}
                         icon={
                             <Box
                                 as="div"
@@ -65,7 +85,7 @@ export default function App_Home({user, version}) {
                     />
                     <StatsCard
                         title={'Down'}
-                        stat={'0'}
+                        stat={statuses?.offline || 0}
                         icon={
                             <Box
                                 as="div"
@@ -78,8 +98,22 @@ export default function App_Home({user, version}) {
                         }
                     />
                     <StatsCard
+                        title={'Unknown'}
+                        stat={statuses?.unknown || 0}
+                        icon={
+                            <Box
+                                as="div"
+                                h="24px"
+                                w="24px"
+                                position="relative"
+                                bgColor={'gray.400'}
+                                borderRadius="50%"
+                            />
+                        }
+                    />
+                    <StatsCard
                         title={'Paused'}
-                        stat={'0'}
+                        stat={statuses?.paused || 0}
                         icon={
                             <Box
                                 as="div"

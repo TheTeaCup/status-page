@@ -25,6 +25,7 @@ export default function Monitor(props) {
                 px={{ base: 2, md: 4 }}
                 py={'4'}
                 shadow={'xl'}
+                marginBottom={'10px'}
                 border={'1px solid'}
                 borderColor={useColorModeValue('gray.800', 'gray.500')}
                 rounded={'lg'}>
