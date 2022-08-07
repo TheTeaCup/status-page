@@ -116,6 +116,7 @@ export default function App_Create_Monitor({user}) {
 
                     }
                 } catch (e) {
+                    console.log(e)
                     setLoading(false);
                     toast({
                         title: 'Form Error',

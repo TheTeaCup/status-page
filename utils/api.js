@@ -19,7 +19,19 @@ const getMonitor = async function (ID, Auth) {
     }).then(res => res.json());
 };
 
+const newUser = async function (Auth, Body) {
+    return await fetch(`/api/admin/users/new`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': Auth || null
+        },
+        body: JSON.stringify(Body),
+    }).then(res => res.json());
+};
+
 export {
     newMonitor,
-    getMonitor
+    getMonitor,
+    newUser
 }

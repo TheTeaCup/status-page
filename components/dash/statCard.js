@@ -23,7 +23,7 @@ export default function StatsCard(props) {
             rounded={'lg'}>
             <Flex justifyContent={'space-between'}>
                 <Box pl={{ base: 2, md: 4 }}>
-                    <StatLabel fontSize={'2xl'} fontWeight={'medium'} isTruncated>
+                    <StatLabel fontSize={'2xl'} fontWeight={'medium'}>
                         {title}
                     </StatLabel>
                     <StatNumber fontSize={'2xl'} fontWeight={'medium'}>

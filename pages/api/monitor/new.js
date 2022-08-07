@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
     try {
         if (req.method === 'POST') {
-            console.log(req.body);
+            //console.log(req.body);
 
             // check for required info
             if (!req.body.user) return res.json({

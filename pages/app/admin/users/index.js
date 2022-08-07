@@ -6,14 +6,7 @@ import AdminNavbar from "../../../../components/admin-nav";
 import {
     Button,
     Center,
-    chakra, FormControl, FormLabel, Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay, Stack,
+    chakra,
     Table,
     TableContainer,
     Tbody,
@@ -21,8 +14,7 @@ import {
     Tfoot,
     Th,
     Thead,
-    Tr, useColorModeValue,
-    useDisclosure,
+    Tr,
     useToast,
 } from '@chakra-ui/react'
 import {AddIcon, EditIcon} from "@chakra-ui/icons";

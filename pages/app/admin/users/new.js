@@ -4,24 +4,110 @@ import {sessionOptions} from "../../../../utils/sessionSettings";
 import csrf from "../../../../utils/csrf";
 import AdminNavbar from "../../../../components/admin-nav";
 import {
-    Button, Flex,
-    FormControl, FormLabel,
-    Heading, Input,
-    Stack, Text,
+    Button,
+    Flex,
+    FormControl,
+    FormLabel,
+    Heading,
+    Input,
+    SimpleGrid,
+    Stack,
+    Switch,
+    Text,
     useColorModeValue,
     useToast,
 } from '@chakra-ui/react'
-import {useEffect, useState} from "react";
-import fetchJson from "../../../../utils/fetchJson";
+import {useState} from "react";
 import {useRouter} from "next/router";
+import * as api from "../../../../utils/api";
 
 export default function App_Admin_Home({user}) {
     const toast = useToast();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const submit = (event) => {
-        event.preventDefault()
+    const submit = async (event) => {
+        setLoading(true)
+        event.preventDefault();
+        let email = event.target.email.value;
+        let name = event.target.name.value;
+        let password = event.target.password.value;
+        let passwordCheck = event.target.passwordCheck.value;
+        let staff = event.target.staff.checked;
+        let admin = event.target.admin.checked;
+
+        if (!email || !name || !password || !passwordCheck) {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "It seems that you forgot to give a selection.",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        } else {
+
+            if (password === passwordCheck) {
+                let data = {
+                    email: email,
+                    name: name,
+                    password: password,
+                    staff: staff,
+                    admin: admin
+                }
+
+                try {
+                    let res = await api.newUser(user.token, data);
+                    console.log(res);
+
+                    if (res.error) {
+                        setLoading(false);
+                        toast({
+                            title: 'Form Error',
+                            description: `${res?.message || 'API Error, Check Logs.'}`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        });
+                    } else {
+                        if (res.message === "OK") {
+                            router.push('/app/admin/users')
+                        } else {
+                            toast({
+                                title: 'Unknown Error',
+                                description: "Something weird happened, please check logs.",
+                                status: 'error',
+                                duration: 9000,
+                                isClosable: true,
+                            });
+                            setLoading(false);
+                        }
+                    }
+
+                } catch (e) {
+                    console.log(e)
+                    toast({
+                        title: 'Form Error',
+                        description: "Something weird happened, please contact support.",
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    });
+                    setLoading(false);
+                }
+
+                //setLoading(false);
+            } else {
+                setLoading(false);
+                toast({
+                    title: 'Form Error',
+                    description: "Passwords do not match",
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            }
+        }
     }
 
     return (
@@ -67,6 +153,7 @@ export default function App_Admin_Home({user}) {
                                 placeholder="John Doe"
                                 _placeholder={{color: 'gray.500'}}
                                 type="text"
+                                required
                             />
                         </FormControl>
                         <FormControl id="email">
@@ -75,13 +162,35 @@ export default function App_Admin_Home({user}) {
                                 placeholder="your-email@example.com"
                                 _placeholder={{color: 'gray.500'}}
                                 type="email"
+                                required
                             />
                         </FormControl>
+
                         <FormControl id="password">
                             <FormLabel>Password</FormLabel>
-                            <Input placeholder="SomecoolPassword!"
+                            <Input placeholder="SomecoolPassword!" required
                                    _placeholder={{color: 'gray.500'}} type="password"/>
                         </FormControl>
+                        <FormControl id="passwordCheck">
+                            <FormLabel>Verify Password</FormLabel>
+                            <Input placeholder="SomecoolPassword!" required
+                                   id="passwordCheck" _placeholder={{color: 'gray.500'}} type="password"/>
+                        </FormControl>
+
+                        <SimpleGrid columns={{base: 1, md: 2}} spacing={{base: 5, lg: 8}}>
+                            <FormControl display='flex' alignItems='center'>
+                                <FormLabel htmlFor='staff' mb='0'>
+                                    Staff
+                                </FormLabel>
+                                <Switch id='staff'/>
+                            </FormControl>
+                            <FormControl display='flex' alignItems='center'>
+                                <FormLabel htmlFor='admin' mb='0'>
+                                    Admin
+                                </FormLabel>
+                                <Switch id='admin'/>
+                            </FormControl>
+                        </SimpleGrid>
 
                         <Stack spacing={6}>
                             {loading ? <Button
