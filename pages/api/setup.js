@@ -69,6 +69,7 @@ async function authLogin(req, res) {
             };
 
             Redis.set('user-' + encrypted, JSON.stringify(userData));
+            Redis.set(userData.token, encrypted);
             await Redis.incr("users");
 
             userData.email = req.body.email;
