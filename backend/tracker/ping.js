@@ -9,6 +9,8 @@ module.exports.run = async function (Redis) {
         if (MonitorInfo) MonitorInfo = JSON.parse(MonitorInfo);
         console.log(MonitorInfo)
 
+        // use switch statement
+
         if (MonitorInfo.type === 'https') {
             if (MonitorInfo.method === 'GET') {
 

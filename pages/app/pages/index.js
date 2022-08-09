@@ -4,8 +4,26 @@ import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
+import {useEffect, useState} from "react";
+import fetchJson from "../../../utils/fetchJson";
 
 export default function App_Pages_Home({user}) {
+    const [pages, setPages] = useState(user?.pages || []);
+
+    useEffect(() => {
+        (async () => {
+            let userCheck = await fetchJson('/api/user/' + user.email, {
+                "headers": {
+                    "Authorization": user.token
+                }
+            });
+            if (userCheck.user) {
+                if (userCheck.user.pages) {
+                    setPages(userCheck.user.pages)
+                }
+            }
+        })()
+    }, [])
 
     return (
         <>
@@ -21,6 +39,7 @@ export default function App_Pages_Home({user}) {
 
 
             <Box p={4}>Pages Home</Box>
+            {console.log(pages)}
         </>
     )
 }

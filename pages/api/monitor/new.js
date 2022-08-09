@@ -77,6 +77,7 @@ export default async function handler(req, res) {
             }
 
             let userMonitors = user.monitors || [];
+            if (!userMonitors) userMonitors = [];
             userMonitors.push({
                 id: monitorID,
                 name: req.body.name

@@ -64,6 +64,7 @@ async function authLogin(req, res) {
                 avatarURL: null,
                 token: crypto.randomBytes(20).toString('hex'),
                 monitors: [],
+                pages: [],
                 version: pack.version || '0.0.0'
             };
 
@@ -77,7 +78,7 @@ async function authLogin(req, res) {
             let siteSettings = {
                 setup: true,
                 domain: 'https://example.com',
-                maintenance: false
+                maintenance: false,
             }
             Redis.set('status-page-settings', JSON.stringify(siteSettings));
 

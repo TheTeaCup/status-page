@@ -71,6 +71,7 @@ export default async function handler(req, res) {
                 avatarURL: null,
                 token: crypto.randomBytes(20).toString('hex'),
                 monitors: [],
+                pages: [],
                 version: pack.version || '0.0.0'
             };
 

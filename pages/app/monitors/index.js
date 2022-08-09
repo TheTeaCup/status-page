@@ -40,21 +40,25 @@ export default function App_Monitors_Home({user}) {
 
 
             <Box maxW="7xl" mx={'auto'} pt={5} px={{base: 2, sm: 12, md: 17}}>
-                <chakra.h1
-                    textAlign={'center'}
-                    fontSize={'4xl'}
-                    py={10}
-                    fontWeight={'bold'}>
-                    All Monitors
-                </chakra.h1>
-
-                {monitors ? (
+                {monitors.length > 0 ? (
                     <>
-                        <center>
-                            {monitors.map(monitor => {
-                                return <Monitor key={monitor.id} data={monitor}/>
-                            })}
-                        </center>
+                        <chakra.h1
+                            textAlign={'center'}
+                            fontSize={'4xl'}
+                            py={10}
+                            fontWeight={'bold'}>
+                            All Monitors
+                        </chakra.h1>
+
+                        {monitors && (
+                            <>
+                                <center>
+                                    {monitors.map(monitor => {
+                                        return <Monitor key={monitor.id} data={monitor}/>
+                                    })}
+                                </center>
+                            </>
+                        )}
                     </>
                 ) : (
                     <>
@@ -67,7 +71,6 @@ export default function App_Monitors_Home({user}) {
                         </chakra.h1>
                     </>
                 )}
-
             </Box>
         </>
     )

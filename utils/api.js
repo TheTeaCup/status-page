@@ -9,6 +9,17 @@ const newMonitor = async function (Token, body) {
     }).then(res => res.json());
 };
 
+const newPage = async function (Token, body) {
+    return await fetch(`/api/status/new`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': Token || null
+        },
+        body: JSON.stringify(body),
+    }).then(res => res.json());
+};
+
 const getMonitor = async function (ID, Auth) {
     return await fetch(`/api/monitor/${ID}`, {
         method: "GET",
@@ -32,6 +43,7 @@ const newUser = async function (Auth, Body) {
 
 export {
     newMonitor,
+    newPage,
     getMonitor,
     newUser
 }
