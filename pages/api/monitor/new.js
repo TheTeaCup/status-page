@@ -66,7 +66,7 @@ export default async function handler(req, res) {
                 method: req.body.method || 'GET',
                 source: req.body.source,
                 beat: req.body.heartBeat || 60,
-                retires: req.body.retires,
+                retries: req.body.retries,
                 body: body,
                 headers: headers,
                 createdAt: Date.now(),

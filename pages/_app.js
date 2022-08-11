@@ -33,6 +33,29 @@ function MyApp({Component, pageProps}) {
 
 
         })()
+
+        let activeRequests = 0;
+        const originalFetch = window.fetch;
+        window.fetch = async function (...args) {
+            if (activeRequests === 0) {
+                start();
+            }
+
+            activeRequests++;
+
+            try {
+                return await originalFetch(...args);
+            } catch (error) {
+                return Promise.reject(error);
+            } finally {
+                activeRequests -= 1;
+                if (activeRequests === 0) {
+                    start.cancel();
+                    NProgress.done();
+                }
+            }
+        };
+
     }, [])
 
     return (

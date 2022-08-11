@@ -30,6 +30,15 @@ const getMonitor = async function (ID, Auth) {
     }).then(res => res.json());
 };
 
+const getMonitorPublic = async function (ID, Auth) {
+    return await fetch(`/api/monitor/${ID}/public`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then(res => res.json());
+};
+
 const newUser = async function (Auth, Body) {
     return await fetch(`/api/admin/users/new`, {
         method: "POST",
@@ -45,5 +54,6 @@ export {
     newMonitor,
     newPage,
     getMonitor,
-    newUser
+    newUser,
+    getMonitorPublic
 }

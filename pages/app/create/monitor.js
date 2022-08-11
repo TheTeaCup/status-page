@@ -41,7 +41,7 @@ export default function App_Create_Monitor({user}) {
         let name = event.target.name.value;
         let url = event.target.url.value;
         let heart = event.target.heart.value;
-        let retires = event.target.retires.value;
+        let retries = event.target.retries.value;
         let method = event.target.method.value;
         let body = event.target.body.value;
         let headers = event.target.headers.value;
@@ -90,7 +90,7 @@ export default function App_Create_Monitor({user}) {
                         name: name || 'null',
                         source: url || 'http://',
                         heartBeat: heart || 60,
-                        retires: retires,
+                        retries: retries,
                         method: method || 'GET',
                         body: body || null,
                         headers: headers || null,
@@ -212,7 +212,7 @@ export default function App_Create_Monitor({user}) {
                                 </Box>
 
                                 <Box>
-                                    <FormControl id="retires">
+                                    <FormControl id="retries">
                                         <FormLabel>Retries</FormLabel>
                                         <Input
                                             type="number"

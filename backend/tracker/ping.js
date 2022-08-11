@@ -7,9 +7,22 @@ module.exports.run = async function (Redis) {
 
         let MonitorInfo = await Redis.get(`${monitorKey}`);
         if (MonitorInfo) MonitorInfo = JSON.parse(MonitorInfo);
-        console.log(MonitorInfo)
+        console.log(MonitorInfo);
+
+        let MonitorData = await Redis.get(`${monitorKey}-data`);
+        if (MonitorData) MonitorData = JSON.parse(MonitorData);
+        console.log(MonitorData)
 
         // use switch statement
+
+        if(MonitorInfo.status === 'suspended') return;
+        let lastCheck = MonitorInfo.lastCheck;
+        let retries = 0;
+        const isFirstBeat = !lastCheck;
+        let beat = MonitorInfo.beat;
+        if(MonitorInfo.retries) {
+            retries = MonitorInfo.retries
+        }
 
         if (MonitorInfo.type === 'https') {
             if (MonitorInfo.method === 'GET') {

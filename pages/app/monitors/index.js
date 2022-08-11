@@ -54,7 +54,7 @@ export default function App_Monitors_Home({user}) {
                             <>
                                 <center>
                                     {monitors.map(monitor => {
-                                        return <Monitor key={monitor.id} data={monitor}/>
+                                        return <Monitor key={monitor.id} data={monitor} auth={user.token}/>
                                     })}
                                 </center>
                             </>

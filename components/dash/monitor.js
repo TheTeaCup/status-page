@@ -1,25 +1,45 @@
 import {
     Box,
     Flex, Spinner,
-    Stat,
-    StatLabel,
-    StatNumber, Text,
+    Text,
     useColorModeValue,
 } from '@chakra-ui/react';
 import Link from "next/link";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import * as api from "../../utils/api";
 
 export default function Monitor(props) {
-    const { data } = props;
+    const { data, auth } = props;
+    const [monitor, setMonitor] = useState(data || null)
     const [status, setStatus] = useState('awaiting');
     const [loading, setLoading] = useState(true);
+    const interval = useRef(null);
 
     const fetch = async() => {
-
+        let res = await api.getMonitor(`${data.id || '1'}`, auth);
+        console.log(res);
+        if(res.error) {
+            setLoading(true);
+            console.log(res.message);
+        }
+        if(res.message === "OK") {
+            setMonitor(res.monitor)
+        }
     }
 
+    useEffect(() => {
+
+        fetch().then(() => {
+            interval.current = setInterval(() => fetch(), 30000);
+        });
+
+        return () => {
+            interval.current && clearInterval(interval.current);
+        };
+    }, []);
+
     return (
-        <Link href={'/app/monitors/' + data?.id || ''}>
+        <Link href={'/app/monitors/' + monitor?.id || ''}>
             <Box
                 w={'50%'}
                 px={{ base: 2, md: 4 }}
@@ -32,7 +52,7 @@ export default function Monitor(props) {
                 <Flex justifyContent={'space-between'}>
                     <Box pl={{ base: 2, md: 4 }}>
                         <Text fontSize={'2xl'} fontWeight={'medium'}>
-                            {data?.name || 'Loading...'}
+                            {monitor?.name || 'Loading...'}
                         </Text>
                     </Box>
                     <Box
