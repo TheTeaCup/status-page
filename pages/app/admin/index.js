@@ -26,7 +26,7 @@ export default function App_Admin_Home({user, stats, version}) {
                 }
             }
         })()
-    }, [])
+    }, [router, version])
 
     return (
         <>

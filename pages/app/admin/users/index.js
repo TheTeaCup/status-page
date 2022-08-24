@@ -61,7 +61,7 @@ export default function App_Admin_Home({user}) {
                 }
             }
         })()
-    }, [])
+    }, [user.token])
 
     return (
         <>

@@ -159,6 +159,7 @@ export default function App_Create_Page({user}) {
                         <FormControl id="slug" isRequired>
                             <FormLabel>Slug</FormLabel>
                             <InputGroup>
+                                {/* eslint-disable-next-line react/no-children-prop */}
                                 <InputLeftAddon children={'/status/'}/>
                                 <Input type='text' placeholder='cool-status-page' _placeholder={{color: 'gray.500'}}/>
                             </InputGroup>

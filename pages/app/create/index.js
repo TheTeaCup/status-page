@@ -16,7 +16,7 @@ export default function App_Create_Home({user}) {
     useEffect(() => {
         router.prefetch('/app/create/monitor');
         router.prefetch('/app/create/page');
-    }, [])
+    })
 
     const onClick = () => {
         setLoading(true);
