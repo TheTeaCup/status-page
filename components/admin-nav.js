@@ -16,7 +16,7 @@ import {
     useColorModeValue,
     useDisclosure,
 } from '@chakra-ui/react';
-import {AddIcon, CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from '@chakra-ui/icons';
+import {CloseIcon, HamburgerIcon, MoonIcon, SunIcon} from '@chakra-ui/icons';
 import NextLink from "next/link"
 
 const Links = [

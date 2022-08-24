@@ -1,28 +1,19 @@
-import {
-    Box,
-    Flex,
-    Stat,
-    StatLabel,
-    StatNumber,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import {Box, Flex, Stat, StatLabel, StatNumber, useColorModeValue,} from '@chakra-ui/react';
 
 export default function StatsCard(props) {
-    const { title, stat, icon } = props;
+    const {title, stat, icon} = props;
     return (
         <Stat
-            css={{
-
-            }}
+            css={{}}
             size={'sm'}
-            px={{ base: 2, md: 4 }}
+            px={{base: 2, md: 4}}
             py={'4'}
             shadow={'xl'}
             border={'1px solid'}
             borderColor={useColorModeValue('gray.800', 'gray.500')}
             rounded={'lg'}>
             <Flex justifyContent={'space-between'}>
-                <Box pl={{ base: 2, md: 4 }}>
+                <Box pl={{base: 2, md: 4}}>
                     <StatLabel fontSize={'2xl'} fontWeight={'medium'}>
                         {title}
                     </StatLabel>

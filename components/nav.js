@@ -78,15 +78,15 @@ export default function Navbar({user}) {
                     </HStack>
                     <Flex alignItems={'center'}>
                         <NextLink href={'/app/create'} passHref>
-                        <Button
-                            variant={'solid'}
-                            colorScheme={'teal'}
-                            size={'sm'}
-                            mr={4}
-                            display={{base: 'none', md: 'flex'}}
-                            leftIcon={<AddIcon/>}>
-                            Add
-                        </Button>
+                            <Button
+                                variant={'solid'}
+                                colorScheme={'teal'}
+                                size={'sm'}
+                                mr={4}
+                                display={{base: 'none', md: 'flex'}}
+                                leftIcon={<AddIcon/>}>
+                                Add
+                            </Button>
                         </NextLink>
                         <Stack direction={'row'} spacing={7}>
                             <Button onClick={toggleColorMode}>

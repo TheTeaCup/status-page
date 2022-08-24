@@ -29,7 +29,7 @@ export const validateEmail = (value) => {
 };
 
 /**
- * This function allows validate if a string is a hexadecimal
+ * This function allows validation if a string is a hexadecimal
  * value
  * @param str [string] hexadecimal value
  * @returns result [boolean]

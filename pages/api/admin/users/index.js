@@ -40,16 +40,16 @@ export default async function handler(req, res) {
                 }
             })
         }, async function (error, results) {
-            if(error) {
+            if (error) {
                 console.log(error);
-                return  res.json({
+                return res.json({
                     error: true,
                     message: "Unknown check logs",
                     users: []
                 });
             }
 
-           return res.json({
+            return res.json({
                 error: false,
                 message: "OK",
                 users: results || []

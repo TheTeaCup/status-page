@@ -1,13 +1,11 @@
 import Navbar from "../../../components/nav";
-import {Box, chakra, SimpleGrid} from "@chakra-ui/react";
+import {Box, chakra} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
 import csrf from "../../../utils/csrf";
 import {useEffect, useState} from "react";
 import fetchJson from "../../../utils/fetchJson";
-import Monitor from "../../../components/dash/monitor";
-import Link from "next/link";
 import Page from "../../../components/dash/page";
 
 export default function App_Pages_Home({user}) {
@@ -54,11 +52,11 @@ export default function App_Pages_Home({user}) {
 
                         {pages && (
                             <>
-                                    <center>
-                                        {pages.map(page => {
-                                            return <Page key={page.id} data={page}/>
-                                        })}
-                                    </center>
+                                <center>
+                                    {pages.map(page => {
+                                        return <Page key={page.id} data={page}/>
+                                    })}
+                                </center>
 
                             </>
                         )}

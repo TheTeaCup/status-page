@@ -22,12 +22,12 @@ module.exports.run = async function (Redis) {
 
         // use switch statement
 
-        if(MonitorInfo.status === 'suspended') return;
+        if (MonitorInfo.status === 'suspended') return;
         let lastCheck = MonitorInfo.lastCheck;
         let retries = 0;
         const isFirstBeat = !lastCheck;
         let beat = MonitorInfo.beat;
-        if(MonitorInfo.retries) {
+        if (MonitorInfo.retries) {
             retries = MonitorInfo.retries
         }
 
@@ -51,7 +51,7 @@ module.exports.run = async function (Redis) {
                 const options = {
                     url: MonitorInfo.source,
                     method: (MonitorInfo.method || "get").toLowerCase(),
-                    ...(MonitorInfo.body ? { data: JSON.parse(MonitorInfo.body) } : {}),
+                    ...(MonitorInfo.body ? {data: JSON.parse(MonitorInfo.body)} : {}),
                     timeout: MonitorInfo.interval * 1000 * 0.8,
                     headers: {
                         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
