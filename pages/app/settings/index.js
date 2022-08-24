@@ -54,7 +54,7 @@ export default function App_Settings_Home({user}) {
                         <FormLabel>User Icon</FormLabel>
                         <Stack direction={['column', 'row']} spacing={6}>
                             <Center>
-                                <Avatar size="xl" src={'https://cdn.chatlaza.com/user/woah.png'}>
+                                <Avatar size="xl" src={user?.avatar || '/assets/unknown.png'}>
                                     <AvatarBadge
                                         as={IconButton}
                                         size="sm"
@@ -72,27 +72,21 @@ export default function App_Settings_Home({user}) {
                         </Stack>
                     </FormControl>
                     <FormControl id="userName" isRequired>
-                        <FormLabel>User name</FormLabel>
+                        <FormLabel>User Name</FormLabel>
                         <Input
-                            placeholder="UserName"
+                            placeholder="User Name"
                             _placeholder={{color: 'gray.500'}}
                             type="text"
+                            value={user.username}
                         />
                     </FormControl>
                     <FormControl id="email" isRequired>
-                        <FormLabel>Email address</FormLabel>
+                        <FormLabel>Email Address</FormLabel>
                         <Input
                             placeholder="your-email@example.com"
                             _placeholder={{color: 'gray.500'}}
                             type="email"
-                        />
-                    </FormControl>
-                    <FormControl id="password" isRequired>
-                        <FormLabel>Password</FormLabel>
-                        <Input
-                            placeholder="password"
-                            _placeholder={{color: 'gray.500'}}
-                            type="password"
+                            value={user.email}
                         />
                     </FormControl>
                     <Stack spacing={6} direction={['column', 'row']}>
@@ -115,6 +109,19 @@ export default function App_Settings_Home({user}) {
                             Submit
                         </Button>
                     </Stack>
+
+                    <Stack spacing={6} direction={['column', 'row']}>
+                        <Button
+                            bg={'purple.200'}
+                            color={'white'}
+                            w="full"
+                            _hover={{
+                                bg: 'purple.300',
+                            }}>
+                            Change Password
+                        </Button>
+                    </Stack>
+
                 </Stack>
             </Flex>
 

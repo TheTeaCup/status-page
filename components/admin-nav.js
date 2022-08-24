@@ -95,9 +95,7 @@ export default function AdminNavbar({user}) {
                                     minW={0}>
                                     <Avatar
                                         size={'sm'}
-                                        src={
-                                            'https://cdn.chatlaza.com/user/woah.png'
-                                        }
+                                        src={user?.avatar || '/assets/unknown.png'}
                                     />
                                 </MenuButton>
                                 <MenuList>

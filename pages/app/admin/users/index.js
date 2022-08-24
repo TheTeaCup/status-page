@@ -4,9 +4,11 @@ import {sessionOptions} from "../../../../utils/sessionSettings";
 import csrf from "../../../../utils/csrf";
 import AdminNavbar from "../../../../components/admin-nav";
 import {
+    Badge,
     Button,
     Center,
     chakra,
+    Skeleton,
     Table,
     TableContainer,
     Tbody,
@@ -22,6 +24,7 @@ import {useEffect, useState} from "react";
 import fetchJson from "../../../../utils/fetchJson";
 import {v4 as uuidv4} from 'uuid';
 import {useRouter} from "next/router";
+import Link from "next/link";
 
 export default function App_Admin_Home({user}) {
     const [users, setUsers] = useState([]);
@@ -35,6 +38,7 @@ export default function App_Admin_Home({user}) {
                     'Authorization': user.token || null,
                 },
             });
+
             if (fetchAllUsers.error) {
                 toast({
                     title: 'API Error',
@@ -45,7 +49,7 @@ export default function App_Admin_Home({user}) {
                 })
             } else {
                 if (fetchAllUsers.users) {
-                    setUsers(fetchAllUsers.users)
+                     setUsers(fetchAllUsers.users)
                 } else {
                     toast({
                         title: 'API Error',
@@ -104,26 +108,56 @@ export default function App_Admin_Home({user}) {
                             <Tr>
                                 <Th>Name</Th>
                                 <Th>Permissions</Th>
+                                <Th>Last Seen</Th>
                                 <Th>Edit</Th>
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {users && users.map(user => {
-                                return (
-                                    <Tr key={uuidv4()}>
-                                        <Td>Testing User</Td>
-                                        <Td>test</Td>
-                                        <Td><Button>
-                                            <EditIcon/>
-                                        </Button></Td>
-                                    </Tr>
-                                )
-                            })}
+                            {users.length === 0 ? (
+                                <>
+                                    <SkeletonRow width="75px"/>
+                                    <SkeletonRow width="125px"/>
+                                    <SkeletonRow width="50px"/>
+                                    <SkeletonRow width="100px"/>
+                                    <SkeletonRow width="75px"/>
+                                </>
+                            ) : (
+                                <>
+                                    {users && users.map(user => {
+                                        let lastSeen = user?.lastSeen;
+                                        if (lastSeen) {
+                                            const rawDate = new Date(lastSeen)
+                                            lastSeen = new Intl.DateTimeFormat("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "2-digit",
+                                            }).format(rawDate);
+                                        }
+                                        return (
+                                            <Tr key={uuidv4()}>
+                                                <Td>{user?.username || "Loading"}</Td>
+                                                <Td>{user?.staff &&
+                                                    <Badge colorScheme='green'>Staff</Badge>} {user?.admin &&
+                                                    <Badge colorScheme='purple'>Admin</Badge>}</Td>
+                                                <Td>{lastSeen || "N/A"}</Td>
+                                                <Td>
+                                                    <Link href={'/app/admin/users/' + user.id}>
+                                                        <Button>
+                                                            <EditIcon/>
+                                                        </Button>
+                                                    </Link>
+                                                </Td>
+                                            </Tr>
+                                        )
+                                    })}
+                                </>
+                            )}
                         </Tbody>
                         <Tfoot>
                             <Tr>
                                 <Th>Name</Th>
                                 <Th>Permissions</Th>
+                                <Th>Last Seen</Th>
                                 <Th>Edit</Th>
                             </Tr>
                         </Tfoot>
@@ -133,6 +167,24 @@ export default function App_Admin_Home({user}) {
         </>
     )
 }
+
+
+const SkeletonRow = ({width}) => (
+    <Tr key={uuidv4()}>
+        <Td>
+            <Skeleton height="10px" w={width} my={4}/>
+        </Td>
+        <Td>
+            <Skeleton height="10px" w={width} my={4}/>
+        </Td>
+        <Td>
+            <Skeleton height="10px" w={width} my={4}/>
+        </Td>
+        <Td>
+            <Skeleton height="10px" w={width} my={4}/>
+        </Td>
+    </Tr>
+)
 
 export const getServerSideProps = withIronSessionSsr(async function ({req, res}) {
     const user = req.session.user;
