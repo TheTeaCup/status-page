@@ -1,4 +1,11 @@
 const got = require('got');
+const axios = require("axios");
+const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+let timezone = require("dayjs/plugin/timezone");
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const {version} = require('../../package.json')
 
 module.exports.run = async function (Redis) {
     let MonitorKeys = await Redis.keys('monitors-*');
@@ -24,23 +31,56 @@ module.exports.run = async function (Redis) {
             retries = MonitorInfo.retries
         }
 
-        if (MonitorInfo.type === 'https') {
-            if (MonitorInfo.method === 'GET') {
+        if (Date.now() - parseInt(lastCheck) < beat * 1000) {
+            return;
+        }
 
-            } else if (MonitorInfo.method === 'POST') {
+        let bean = {checkedAt: Date.now()}
 
-            } else if (MonitorInfo.method === 'PUT') {
+        try {
+            if (MonitorInfo.type === 'https') {
+                let startTime = dayjs().valueOf();
+                // HTTP basic auth
+                let basicAuthHeader = {};
+                if (MonitorInfo.auth_method === "basic") {
+                    basicAuthHeader = {
+                        //"Authorization": "Basic " + this.encodeBase64(MonitorInfo.basic_auth_user, MonitorInfo.basic_auth_pass),
+                    };
+                }
 
-            } else if (MonitorInfo.method === 'PATCH') {
+                const options = {
+                    url: MonitorInfo.source,
+                    method: (MonitorInfo.method || "get").toLowerCase(),
+                    ...(MonitorInfo.body ? { data: JSON.parse(MonitorInfo.body) } : {}),
+                    timeout: MonitorInfo.interval * 1000 * 0.8,
+                    headers: {
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                        "User-Agent": "Tea-Time/" + version,
+                        ...(MonitorInfo.headers ? JSON.parse(MonitorInfo.headers) : {}),
+                        ...(basicAuthHeader),
+                    },
+                    maxRedirects: retries,
+                };
 
-            } else if (MonitorInfo.method === 'DELETE') {
+                let res = await axios.request(options);
 
-            } else if (MonitorInfo.method === 'HEAD') {
-
-            } else if (MonitorInfo.method === 'OPTIONS') {
+                // console.log(res)
+                bean.msg = `${res.status} - ${res.statusText}`;
+                bean.ping = dayjs().valueOf() - startTime;
+                bean.status = "up";
+                MonitorInfo.status = "up";
+                MonitorInfo.lastCheck = Date.now();
 
             }
+        } catch (e) {
+            console.log(e)
+            bean.msg = e.message;
         }
+
+        MonitorData.push(bean);
+
+        Redis.set('monitors-' + MonitorInfo.id, JSON.stringify(MonitorInfo));
+        Redis.set('monitors-' + MonitorInfo.id + '-data', JSON.stringify(MonitorData));
 
     });
 }
