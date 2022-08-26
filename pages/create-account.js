@@ -23,7 +23,7 @@ import csrf from "../utils/csrf";
 
 export default function CreateAccount() {
     const {colorMode, toggleColorMode} = useColorMode();
-
+    const color = useColorModeValue('white', 'gray.700');
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [passwordVerify, setPasswordVerify] = useState(null);
@@ -83,7 +83,7 @@ export default function CreateAccount() {
 
                             <Box
                                 rounded={'lg'}
-                                bg={useColorModeValue('white', 'gray.700')}
+                                bg={color}
                                 boxShadow={'lg'}
                                 p={8}>
                                 <Stack spacing={4}>
