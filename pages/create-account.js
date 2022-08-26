@@ -37,7 +37,6 @@ export default function CreateAccount() {
                 setLoading(false)
                 if(settingsCheck.data) {
                     setUserCreation(settingsCheck.data.userCreationEnabled);
-                    //setUserCreation(true)
                     setLoading(false)
                     if(!settingsCheck.data.setup) {
                         Router.push('/setup')
