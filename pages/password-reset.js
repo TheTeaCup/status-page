@@ -1,5 +1,6 @@
 import {Button, Flex, FormControl, Heading, Input, Stack, Text, useColorModeValue,} from '@chakra-ui/react';
 import Head from "next/head";
+import Link from "next/link";
 
 export default function ForgotPasswordForm() {
     return (
@@ -40,6 +41,9 @@ export default function ForgotPasswordForm() {
                             type="email"
                         />
                     </FormControl>
+
+                    <br/>
+
                     <Stack spacing={6}>
                         <Button
                             bg={'blue.400'}
@@ -49,6 +53,18 @@ export default function ForgotPasswordForm() {
                             }}>
                             Request Reset
                         </Button>
+
+                        <Link href={'/'}>
+                            <Button
+                                bg={'blue.400'}
+                                color={'white'}
+                                _hover={{
+                                    bg: 'blue.500',
+                                }}>
+                                Know your Password?
+                            </Button>
+                        </Link>
+
                     </Stack>
                 </Stack>
             </Flex>

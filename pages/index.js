@@ -6,14 +6,13 @@ import {
     FormLabel,
     Heading,
     Input,
-    Link,
     Stack,
     Text,
     useColorMode,
     useColorModeValue,
     useToast,
 } from '@chakra-ui/react';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {MoonIcon, SunIcon} from "@chakra-ui/icons";
 import Head from "next/head";
 import fetchJson from "../utils/fetchJson";
@@ -21,6 +20,7 @@ import Router from "next/router";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../utils/sessionSettings";
 import csrf from "../utils/csrf";
+import Link from "next/link";
 
 export default function Home({user}) {
     const toast = useToast();
@@ -30,6 +30,7 @@ export default function Home({user}) {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [userCreation, setUserCreation] = useState(false);
 
     const login = async event => {
         event.preventDefault();
@@ -121,6 +122,23 @@ export default function Home({user}) {
         }
     }
 
+    useEffect(() => {
+        (async () => {
+            try {
+                let settingsCheck = await fetchJson('/api/public/settings');
+                if(settingsCheck.data) {
+                    //setUserCreation(settingsCheck.data.userCreationEnabled);
+                  //  setUserCreation(true)
+                    if(!settingsCheck.data.setup) {
+                        Router.push('/setup')
+                    }
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        })()
+    })
+
     return (
         <>
             <Head>
@@ -185,6 +203,20 @@ export default function Home({user}) {
                                     }}>
                                     Sign in
                                 </Button>}
+
+                                {userCreation && <>
+                                    <Link href={'/create-account'}>
+                                        <Button
+                                            bg={'blue.400'}
+                                            _hover={{
+                                                bg: 'blue.500',
+                                            }}
+                                            color={'white'}>
+                                            Create an Account
+                                        </Button>
+                                    </Link>
+                                </>}
+
                             </Stack>
                         </Stack>
                     </Box>
