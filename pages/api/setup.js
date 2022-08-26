@@ -80,6 +80,7 @@ async function authLogin(req, res) {
                 setup: true,
                 domain: 'https://example.com',
                 maintenance: false,
+                userCreationEnabled: false
             }
             Redis.set('status-page-settings', JSON.stringify(siteSettings));
 
