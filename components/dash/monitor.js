@@ -6,19 +6,32 @@ import * as api from "../../utils/api";
 export default function Monitor(props) {
     const {data, auth} = props;
     const [monitor, setMonitor] = useState(data || null)
-    const [status, setStatus] = useState('awaiting');
+    const [status, setStatus] = useState(null);
     const [loading, setLoading] = useState(true);
     const interval = useRef(null);
 
     const fetch = async () => {
         let res = await api.getMonitor(`${data.id || '1'}`, auth);
-        console.log(res);
         if (res.error) {
             setLoading(true);
             console.log(res.message);
         }
         if (res.message === "OK") {
-            setMonitor(res.monitor)
+            setMonitor(res.monitor);
+            let status = res.monitor.status;
+            if (status === "up") {
+                setStatus("green.500");
+                setLoading(false);
+            } else if (status === "down") {
+                setStatus("red.400");
+                setLoading(false);
+            } else if (status === "paused") {
+                setStatus("gray.400");
+                setLoading(false);
+            } else {
+                setStatus("gray.400");
+                setLoading(false);
+            }
         }
     }
 
@@ -60,6 +73,17 @@ export default function Monitor(props) {
                                             w="24px"
                                             position="relative"
                                             borderRadius="50%"/> : <></>}
+
+                        {!loading && status && <>
+                            <Box
+                                as="div"
+                                h="24px"
+                                w="24px"
+                                position="relative"
+                                bgColor={status}
+                                borderRadius="50%"
+                            />
+                        </>}
 
                     </Box>
                 </Flex>

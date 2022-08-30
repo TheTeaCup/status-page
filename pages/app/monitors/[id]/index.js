@@ -1,11 +1,12 @@
 import Navbar from "../../../../components/nav";
-import {Box} from "@chakra-ui/react";
+import {Box, Flex, Grid} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../../utils/sessionSettings";
 import csrf from "../../../../utils/csrf";
 
-export default function App_Monitor_ID({user}) {
+export default function App_Monitor_ID({user, monitorInfo}) {
+    console.log(monitorInfo)
 
     return (
         <>
@@ -25,7 +26,7 @@ export default function App_Monitor_ID({user}) {
     )
 }
 
-export const getServerSideProps = withIronSessionSsr(async function ({req, res}) {
+export const getServerSideProps = withIronSessionSsr(async function ({req, res, query}) {
     const user = req.session.user;
 
     await csrf(req, res);
@@ -38,8 +39,30 @@ export const getServerSideProps = withIronSessionSsr(async function ({req, res})
             },
         }
     } else {
-        return {
-            props: {user: req.session.user, csrfToken: req.csrfToken()}
-        };
+        try {
+            const protocol = req.headers['x-forwarded-proto'] || 'http'
+            const baseUrl = req ? `${protocol}://${req.headers.host}` : ''
+            let id = query.id || '1';
+            let monitorInfo = await fetch(baseUrl + `/api/monitor/${id}`, {
+                headers: {
+                    'Authorization': user.token || null,
+                },
+            }).then(res => res.json());
+           // console.log(monitorInfo);
+            if (monitorInfo.monitor) {
+                monitorInfo = monitorInfo.monitor
+            } else monitorInfo = null;
+
+            return {
+                props: {user: req.session.user, csrfToken: req.csrfToken(), monitorInfo: monitorInfo}
+            };
+
+        } catch (e) {
+            console.log(e)
+            return {
+                props: {user: req.session.user, csrfToken: req.csrfToken(), monitorInfo: null}
+            };
+        }
+
     }
 }, sessionOptions)
