@@ -36,6 +36,10 @@ const Links = [
         name: 'Users',
         to: '/admin/users'
     },
+    {
+        name: 'Settings',
+        to: '/admin/settings'
+    },
 ];
 
 const NavLink = ({children}) => (

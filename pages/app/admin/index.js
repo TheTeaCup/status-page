@@ -1,4 +1,4 @@
-import {Box, chakra, SimpleGrid} from "@chakra-ui/react";
+import {Box, chakra, Divider, SimpleGrid} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../utils/sessionSettings";
@@ -12,6 +12,7 @@ import {MdSystemUpdateAlt} from "react-icons/md"
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 import fetchJson from "../../../utils/fetchJson";
+import Link from "next/link";
 
 export default function App_Admin_Home({user, stats, version}) {
     const router = useRouter();
@@ -79,6 +80,21 @@ export default function App_Admin_Home({user, stats, version}) {
                         }
                     />
                 </SimpleGrid>
+
+                <br/>
+                <Divider />
+                <br/>
+
+                <Link href={'/app/admin/settings'}>
+                    <chakra.h1
+                        textAlign={'center'}
+                        fontSize={'3xl'}
+                        py={10}
+                        fontWeight={'bold'}>
+                        Change Settings?
+                    </chakra.h1>
+                </Link>
+
             </Box>
         </>
     )

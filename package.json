@@ -1,6 +1,6 @@
 {
   "name": "status-page",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
