@@ -50,10 +50,21 @@ const newUser = async function (Auth, Body) {
     }).then(res => res.json());
 };
 
+const newUserPublic = async function (Body) {
+    return await fetch(`/api/user/new`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Body),
+    }).then(res => res.json());
+};
+
 export {
     newMonitor,
     newPage,
     getMonitor,
     newUser,
-    getMonitorPublic
+    getMonitorPublic,
+    newUserPublic
 }
