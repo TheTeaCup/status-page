@@ -1,5 +1,5 @@
 import Navbar from "../../../../components/nav";
-import {Box, Flex, Grid} from "@chakra-ui/react";
+import {Box} from "@chakra-ui/react";
 import Head from "next/head";
 import {withIronSessionSsr} from "iron-session/next";
 import {sessionOptions} from "../../../../utils/sessionSettings";
@@ -48,7 +48,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({req, res, 
                     'Authorization': user.token || null,
                 },
             }).then(res => res.json());
-           // console.log(monitorInfo);
+            // console.log(monitorInfo);
             if (monitorInfo.monitor) {
                 monitorInfo = monitorInfo.monitor
             } else monitorInfo = null;

@@ -126,9 +126,9 @@ export default function Home({user}) {
         (async () => {
             try {
                 let settingsCheck = await fetchJson('/api/public/settings');
-                if(settingsCheck.data) {
+                if (settingsCheck.data) {
                     setUserCreation(settingsCheck.data.userCreationEnabled);
-                    if(!settingsCheck.data.setup) {
+                    if (!settingsCheck.data.setup) {
                         Router.push('/setup')
                     }
                 }

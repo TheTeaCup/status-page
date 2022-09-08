@@ -82,7 +82,7 @@ export default function App_Admin_Home({user, stats, version}) {
                 </SimpleGrid>
 
                 <br/>
-                <Divider />
+                <Divider/>
                 <br/>
 
                 <Link href={'/app/admin/settings'}>

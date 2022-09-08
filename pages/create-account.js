@@ -5,7 +5,8 @@ import {
     FormControl,
     FormLabel,
     Heading,
-    Input, Spinner,
+    Input,
+    Spinner,
     Stack,
     Text,
     useColorMode,
@@ -35,10 +36,10 @@ export default function CreateAccount() {
             try {
                 let settingsCheck = await fetchJson('/api/public/settings');
                 setLoading(false)
-                if(settingsCheck.data) {
+                if (settingsCheck.data) {
                     setUserCreation(settingsCheck.data.userCreationEnabled);
                     setLoading(false)
-                    if(!settingsCheck.data.setup) {
+                    if (!settingsCheck.data.setup) {
                         Router.push('/setup')
                     }
                 }
@@ -146,8 +147,8 @@ export default function CreateAccount() {
                     ) : (
                         <>
                             {loading ? (
-                                <Spinner size='xl' />
-                            ):(
+                                <Spinner size='xl'/>
+                            ) : (
                                 <>
                                     <Box textAlign="center" py={10} px={6}>
                                         <Box display="inline-block">
@@ -160,14 +161,15 @@ export default function CreateAccount() {
                                                 w={'55px'}
                                                 h={'55px'}
                                                 textAlign="center">
-                                                <CloseIcon boxSize={'20px'} color={'white'} />
+                                                <CloseIcon boxSize={'20px'} color={'white'}/>
                                             </Flex>
                                         </Box>
                                         <Heading as="h2" size="xl" mt={6} mb={2}>
                                             This page is not open
                                         </Heading>
                                         <Text color={'gray.500'}>
-                                            If you would like to create an account then please contact this sites administrator.
+                                            If you would like to create an account then please contact this sites
+                                            administrator.
                                         </Text>
                                         <br/>
                                         <Link href={'/'}>

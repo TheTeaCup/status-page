@@ -9,19 +9,23 @@ import fetchJson from "../../../utils/fetchJson";
 import {
     Button,
     Flex,
-    FormControl, FormHelperText,
+    FormControl,
+    FormHelperText,
     FormLabel,
     Heading,
     Input,
     Stack,
     Switch,
     Text,
-    useColorModeValue
+    useColorModeValue,
+    useToast
 } from "@chakra-ui/react";
 
 export default function App_Admin_Settings({user, settings, version}) {
     const router = useRouter();
+    const toast = useToast();
     const [loading, setLoading] = useState(false);
+    console.log(settings)
 
     useEffect(() => {
         (async () => {
@@ -38,6 +42,70 @@ export default function App_Admin_Settings({user, settings, version}) {
     const submit = async (event) => {
         setLoading(true)
         event.preventDefault();
+
+        let domain = event.target.domain.value;
+        let userCreationEnabled = event.target.usercreation.checked;
+        let maintenance = event.target.maintenance.checked;
+
+        if (!domain) {
+            setLoading(false);
+            toast({
+                title: 'Form Error',
+                description: "You did not enter a valid email",
+                status: 'error',
+                duration: 9000,
+                isClosable: true,
+            })
+        } else {
+
+            let data = {
+                domain: domain,
+                userCreationEnabled: userCreationEnabled,
+                maintenance: maintenance
+            }
+
+            try {
+                let response = await fetchJson("/api/admin/settings", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': user.token || null,
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.error) {
+                    setLoading(false);
+                    toast({
+                        title: 'API Error',
+                        description: response.error,
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                } else {
+                    setLoading(false);
+                    toast({
+                        title: 'Success',
+                        description: 'Settings updated',
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                }
+
+            } catch (e) {
+                toast({
+                    title: 'API Error',
+                    description: `Error Occurred, Check Logs`,
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+                setLoading(false);
+            }
+
+        }
     }
 
     return (
@@ -72,23 +140,26 @@ export default function App_Admin_Settings({user, settings, version}) {
                         <Text
                             fontSize={{base: 'sm', sm: 'md'}}
                             color={useColorModeValue('gray.800', 'gray.400')}>
-                            {/*Below you can change the sites settings!*/} This is not done yet!
+                            Below you can change the sites settings!
                         </Text>
 
-                        <FormControl id="name">
-                            <FormLabel>Name</FormLabel>
-                            <Input
-                                placeholder="Site Name"
-                                _placeholder={{color: 'gray.500'}}
-                                type="text"
-                                required
-                            />
+                        <FormControl id="domain">
+                            <FormLabel>Domain</FormLabel>
+                            <Input defaultValue={settings?.domain || ''} id={'domain'} type="url"/>
                         </FormControl>
 
                         <FormControl id="usercreation">
                             <FormLabel>User Creation</FormLabel>
-                            <Switch required id='usercreation' size={'md'}/>
+                            <Switch defaultChecked={settings?.userCreationEnabled || false} id='usercreation'
+                                    size={'md'}/>
                             <FormHelperText>If checked then anyone is able to create an account.</FormHelperText>
+                        </FormControl>
+
+                        <FormControl id="maintenance">
+                            <FormLabel>Maintenance</FormLabel>
+                            <Switch disabled={true} isChecked={settings?.maintenance || false} id='maintenance'
+                                    size={'md'}/>
+                            <FormHelperText>Not Done</FormHelperText>
                         </FormControl>
 
                         <Stack spacing={6}>
