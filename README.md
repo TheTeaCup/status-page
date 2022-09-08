@@ -2,6 +2,11 @@
 
 Built with React, Chakra-UI and love from North Carolina!
 
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
 ## ⭐ Live Demo
 
 Coming soon!
@@ -65,3 +70,13 @@ Or in my personal [discord](https://discord.gg/v9sfD3JNEH) just use the status-p
 
 If you want to report a bug or request a new feature, feel free to open
 a [new issue](https://github.com/TheTeaCup/status-page/issues).
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/TheTeaCup/status-page.svg?style=for-the-badge
+[contributors-url]: https://github.com/TheTeaCup/status-page/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/TheTeaCup/status-page.svg?style=for-the-badge
+[forks-url]: https://github.com/TheTeaCup/status-page/network/members
+[stars-shield]: https://img.shields.io/github/stars/TheTeaCup/status-page.svg?style=for-the-badge
+[stars-url]: https://github.com/TheTeaCup/status-page/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TheTeaCup/status-page.svg?style=for-the-badge
+[issues-url]: https://github.com/TheTeaCup/status-page/issues
