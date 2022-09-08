@@ -3,11 +3,13 @@
 Built with React, Chakra-UI and love from North Carolina!
 
 ## ⭐ Live Demo
+
 Coming soon!
 
 ## 🔧 How to Install
 
 Required Tools:
+
 - [Node.js](https://nodejs.org/en/download/) >= 14
 - [Git](https://git-scm.com/downloads)
 - [pm2](https://pm2.keymetrics.io/) - For run in background
@@ -39,6 +41,7 @@ pm2 start backend/index.js --name status-page
 
 
 ```
+
 Browse to http://localhost:3001 after starting.
 
 More useful PM2 Commands
@@ -59,4 +62,6 @@ You can discuss or ask for help in [issues](https://github.com/TheTeaCup/status-
 Or in my personal [discord](https://discord.gg/v9sfD3JNEH) just use the status-page channel.
 
 ### Bug Reports / Feature Requests
-If you want to report a bug or request a new feature, feel free to open a [new issue](https://github.com/TheTeaCup/status-page/issues).
+
+If you want to report a bug or request a new feature, feel free to open
+a [new issue](https://github.com/TheTeaCup/status-page/issues).
