@@ -5,7 +5,7 @@ export default function Page(props) {
     const {data} = props;
 
     return (
-        <Link href={'/app/pages/' + data?.id || ''}>
+        <Link href={'/app' + `${props.admin ? '/admin/' : '/'}` + 'pages/' + data?.id || ''}>
             <Box
                 w={'20%'}
 

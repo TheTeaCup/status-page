@@ -26,7 +26,7 @@ import {v4 as uuidv4} from 'uuid';
 import {useRouter} from "next/router";
 import Link from "next/link";
 
-export default function App_Admin_Home({user}) {
+export default function App_Admin_Users({user}) {
     const [users, setUsers] = useState([]);
     const toast = useToast();
     const router = useRouter();

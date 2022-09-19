@@ -36,10 +36,6 @@ const Links = [
         name: 'Users',
         to: '/admin/users'
     },
-    {
-        name: 'Settings',
-        to: '/admin/settings'
-    },
 ];
 
 const NavLink = ({children}) => (
@@ -74,7 +70,7 @@ export default function AdminNavbar({user}) {
                         onClick={isOpen ? onClose : onOpen}
                     />
                     <HStack spacing={8} alignItems={'center'}>
-                        <Box>Status Page</Box>
+                        <Box>Admin Panel</Box>
                         <HStack
                             as={'nav'}
                             spacing={4}
@@ -109,7 +105,11 @@ export default function AdminNavbar({user}) {
                                     <NextLink href={'/app/settings'} passHref>
                                         <MenuItem>Settings</MenuItem>
                                     </NextLink>
+                                    <MenuDivider/>
                                     <NextLink href={'/app/admin'} passHref>
+                                        <MenuItem>Admin Home</MenuItem>
+                                    </NextLink>
+                                    <NextLink href={'/app/admin/settings'} passHref>
                                         <MenuItem>Admin Settings</MenuItem>
                                     </NextLink>
                                     <MenuDivider/>

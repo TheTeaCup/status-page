@@ -73,10 +73,17 @@ a [new issue](https://github.com/TheTeaCup/status-page/issues).
 
 
 [contributors-shield]: https://img.shields.io/github/contributors/TheTeaCup/status-page.svg?style=for-the-badge
+
 [contributors-url]: https://github.com/TheTeaCup/status-page/graphs/contributors
+
 [forks-shield]: https://img.shields.io/github/forks/TheTeaCup/status-page.svg?style=for-the-badge
+
 [forks-url]: https://github.com/TheTeaCup/status-page/network/members
+
 [stars-shield]: https://img.shields.io/github/stars/TheTeaCup/status-page.svg?style=for-the-badge
+
 [stars-url]: https://github.com/TheTeaCup/status-page/stargazers
+
 [issues-shield]: https://img.shields.io/github/issues/TheTeaCup/status-page.svg?style=for-the-badge
+
 [issues-url]: https://github.com/TheTeaCup/status-page/issues

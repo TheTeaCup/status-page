@@ -47,7 +47,7 @@ export default function Monitor(props) {
     }, []);
 
     return (
-        <Link href={'/app/monitors/' + monitor?.id || ''}>
+        <Link href={'/app' + `${props.admin ? '/admin/' : '/'}` + 'monitors/' + monitor?.id || ''}>
             <Box
                 w={'50%'}
                 px={{base: 2, md: 4}}
