@@ -42,4 +42,3 @@ async function update() {
 }
 
 require('./server.js');
-require('./tracker/index');

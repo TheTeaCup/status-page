@@ -4,6 +4,7 @@ const next = require('next');
 const port = process.env.PORT;
 const app = next({})
 const handle = app.getRequestHandler()
+require('./tracker/index');
 
 app.prepare().then(() => {
     const server = express()
