@@ -113,7 +113,7 @@ export default function Navbar({user}) {
                                         <MenuItem>Settings</MenuItem>
                                     </NextLink>
                                     {user?.admin && <NextLink href={'/app/admin'} passHref>
-                                        <MenuItem>Admin Settings</MenuItem>
+                                        <MenuItem>Admin Panel</MenuItem>
                                     </NextLink>}
                                     <MenuDivider/>
                                     <NextLink href={'/app/logout'} passHref>
