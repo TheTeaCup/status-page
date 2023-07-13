@@ -1,4 +1,4 @@
-# This project is on hold for now
+# Checkout the v1 branch for more updates
 
 # Tea Cup's Status Page
 
