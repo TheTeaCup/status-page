@@ -1,3 +1,5 @@
+# This project is on hold for now
+
 # Tea Cup's Status Page
 
 Built with React, Chakra-UI and love from North Carolina!
