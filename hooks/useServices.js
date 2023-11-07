@@ -43,7 +43,7 @@ function useServices() {
 }
 
 async function logs(key) {
-    const response = await fetch(`https://raw.githubusercontent.com/TheTeaCup/status-page/v2/public/status/${key}_report.log`);
+    const response = await fetch(`https://raw.githubusercontent.com/TheTeaCup/status-page/master/public/status/${key}_report.log`);
 
     const text = await response.text();
     const lines = text.split("\n");

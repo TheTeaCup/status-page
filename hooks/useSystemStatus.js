@@ -63,7 +63,7 @@ function useSystemStatus() {
 }
 
 async function logs(key) {
-    const response = await fetch(`https://raw.githubusercontent.com/TheTeaCuo/status-page/v2/public/status/${key}_report.log`);
+    const response = await fetch(`https://raw.githubusercontent.com/TheTeaCuo/status-page/master/public/status/${key}_report.log`);
     const text = await response.text();
     const lines = text.split("\n");
     try {
