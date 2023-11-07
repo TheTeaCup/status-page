@@ -28,6 +28,7 @@ html, body {
     .histogram {
         @apply h-6 w-full mx-auto;
     }
+
     .hitbox {
         align-items: flex-end;
         box-sizing: border-box;
@@ -36,6 +37,7 @@ html, body {
         padding: 1px;
         border-radius: 3.75px;
     }
+
     .bar {
         @apply bg-gray-600;
         padding-bottom: 1px;

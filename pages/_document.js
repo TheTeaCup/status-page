@@ -1,13 +1,13 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import {Head, Html, Main, NextScript} from 'next/document'
 
 export default function Document() {
-  return (
-      <Html style={{background: "#161922"}} lang={'en'}>
-          <Head />
-          <body className="splash">
-          <Main />
-          <NextScript />
-          </body>
-      </Html>
-  )
+    return (
+        <Html style={{background: "#161922"}} lang={'en'}>
+            <Head/>
+            <body className="splash">
+            <Main/>
+            <NextScript/>
+            </body>
+        </Html>
+    )
 }

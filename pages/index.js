@@ -22,7 +22,7 @@ export default function Home() {
                     </div>
                 </div>
                 <div className='mt-20 w-full absolute overflow-scroll'>
-                    <ServicesSection />
+                    <ServicesSection/>
                 </div>
             </div>
 
